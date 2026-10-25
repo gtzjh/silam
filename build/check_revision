@@ -234,6 +234,8 @@ contains
 
 
 def writeBranch(branch, branchfname):
+    if branch is None and not os.path.exists(branchfname):
+        branch = "silam_v6_1pub"
     if branch is None:
         print("Could not detect the branch name, relying on the existing one")
         return

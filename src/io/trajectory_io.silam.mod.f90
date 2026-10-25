@@ -210,7 +210,7 @@ CONTAINS
       endif
       tr_set%ounit(iSrc) = unit
 
-      WRITE(unit,'(A,A)')'#Old trajectory output(TRADOS style) written by ', revision_str
+      WRITE(unit,'(A)')'#Old trajectory output(TRADOS style) written by SILAM'
       if (nSrcs>1) WRITE(unit,'(A,A)')'#Source name: ', chSrcNm(iSrc)
       WRITE(unit,'(A,A)')'#Case name: ',chCaseNm
       WRITE(unit,'(A)')'# add. quantity:  1: boundary layer height from gound [m]'

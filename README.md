@@ -73,6 +73,8 @@ SILJA模块：  <name>.silja.mod.f90
 
 根目录 `Makefile` 是日常构建入口，`build/` 保留内部规则和编译配置。所选配置保存到本地 `build/DefaultSetup`。以下命令均在项目根目录执行：
 
+构建直接使用当前工作树中的源码，包括未提交的修改，不读取 Git/SVN 版本信息。默认生成 `bin/silam.<配置名>`，并维护 `bin/silam` 软链接。
+
 ```bash
 # 首次编译：选择配置后构建
 make gnu
@@ -170,7 +172,7 @@ Get the source code
 
 Install needed packages
 
-`$ sudo apt install make python3 gfortran libeccodes-dev libnetcdf-dev libnetcdff-dev liblapack-dev libblas-dev libbz2-dev libproj-dev`
+`$ sudo apt install make perl gfortran libeccodes-dev libnetcdf-dev libnetcdff-dev liblapack-dev libblas-dev libbz2-dev libproj-dev`
 
 Compile the binary
 
@@ -180,10 +182,9 @@ Compile the binary
 
 `$ make`
 
-The latter command might require a second try. Finally, it should create a binary in bin/,
-that can be launched as:
+The build should create a binary in bin/, which can be launched as:
 
-`$ ./bin/silam_v6_1pub.gnu`
+`$ ./bin/silam.gnu`
 
 Silam should run and complain about missing silam.ini.
 Then the binary is ready to use! You can test it with a test case from

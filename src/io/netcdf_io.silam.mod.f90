@@ -683,7 +683,7 @@ CONTAINS
    ! First global attributes:
     call  put_chatt_nc(nf, nf90_global, "global", "title", "SILAM_OUTPUT")
     call  put_chatt_nc(nf, nf90_global, "global", "Conventions",  "CF-1.3")
-    call  put_chatt_nc(nf, nf90_global, "global", "source",  revision_str)
+    call  put_chatt_nc(nf, nf90_global, "global", "source",  "SILAM")
     call  put_chatt_nc(nf, nf90_global, "global", "_CoordinateModelRunDate", &
            &  fu_time_to_thredds_string(nCtl%start_time))
     call  put_chatt_nc(nf, nf90_global, "global", "SIMULATION_START_DATE", &

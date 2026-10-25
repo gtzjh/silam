@@ -26,8 +26,6 @@ PROGRAM silam_main
   use optimisation
   use silam_namelist
   use silam_times
-  use revision
-  use svndiff
   use silam_partitioning 
   use field_identifications
   use ascii_io
@@ -150,7 +148,7 @@ use tangent_linear
     PRINT * ;   PRINT * ;   PRINT * ;
   endif
 
-  CALL msg ('Hello world! This is ' // revision_str // ' speaking. PID = '//trim(fu_str(MyPID)))
+  CALL msg ('Hello world! This is SILAM speaking. PID = '//trim(fu_str(MyPID)))
   call msg('Running at HostName: '//trim(hostname))
   call msg('compiler_version: '// compiler_version())
   call msg('compiler_options: '// compiler_options())
@@ -179,9 +177,6 @@ use tangent_linear
 !  stop
   
   
-#ifndef SUPRESS_SVN_DIFF
-  call print_svn_diff()
-#endif
 
   if(smpi_is_mpi_version())then
      write(unit=rankTmp,fmt='(A25,I3,A6)') 'MPI version running with ', smpi_global_tasks, ' tasks'

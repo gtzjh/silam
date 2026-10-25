@@ -22,7 +22,6 @@ MODULE md ! The machine dependent code of silja on Intel platform
   use psapi
 #endif
   use globals !, only : r4k, r8k
-  use revision
 #ifndef __GFORTRAN__
   use ifport
   use ifcore
@@ -64,7 +63,6 @@ MODULE md ! The machine dependent code of silja on Intel platform
   public RENAME !FROM IFPORT
   public FTELL  !FROM IFPORT
 #endif
-  public revision_str
 
 #ifdef VS2012 
   !

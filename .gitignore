@@ -29,9 +29,7 @@ __pycache__/
 *.tmp
 *~
 
-# Generated source and local state under src/
-/src/**/revision.mod.f90
-/src/**/svndiff.mod.f90
+# Local source tags
 /src/**/tags
 /tags
 /TAGS
@@ -40,7 +38,6 @@ __pycache__/
 /build/**/silam_main.*
 /build/**/ascii_2_nc.*
 /build/**/frp_main_v2_0.*
-/build/**/Makefile.branch
 /build/**/DefaultSetup
 /build/**/test_*.objects
 /build/**/test_*.rules.*

@@ -8,7 +8,6 @@
 # The executable
 PROGRAM = ???
 MODEL_MAIN = $(PROGRAM)
-PYTHON ?= python3
 # The setup variable: if defined, compiler options will be read from
 # options.$(SETUP), and the executable will be named as $(PROGRAM).$(SETUP)
 SETUP = 
@@ -51,7 +50,7 @@ export
 
 check_exist : $(PROGRAM).f90
 
-$(PROGRAM) : expand revision config
+$(PROGRAM) : expand config
 	mkdir -p $(OBJDIR) $(BINDIR)	
 	$(MAKE) -f$(BUILDDIR)/makefile.any
 
@@ -79,9 +78,6 @@ dot : expand config
 #	dot -Gratio=1.4 -Granksep=0.4 -Gnodesep=0.3 -Nfontsize=18 -Tsvg silam.dot > $(PROGRAM).svg
 	dot -Granksep=0.4 -Gnodesep=0.3 -Nfontsize=18 -Tsvg $(MODEL_MAIN).dot > $(PROGRAM).svg
 
-revision : 
-	$(PYTHON) $(BUILDDIR)/check_revision $(SRCDIR)
-
 compact :
 	rm -rf $(SILAM_ROOT)/obj/*
 	cd $(SILAM_ROOT) && zip -r source.zip src tests && rm -rf src tests
@@ -93,15 +89,12 @@ up : expand
 	cd $(SRCDIR) && svn up
 
 
-# Create a source distribution package. Libraries are not
-# included. The check_revision script is replace with a dummy, since
-# the .svn directory is not included either.
+# Create a source distribution package. Libraries are not included.
 
 DISTRO = $(DISTRDIR)/$(PROGRAM)
-distr : expand revision config
+distr : expand config
 	mkdir -p $(DISTRO)/src $(DISTRO)/tests $(DISTRO)/bin $(DISTRO)/build $(DISTRO)/obj
-	cp -v makefile makefile.* config.pl library.objects Makefile.branch $(wildcard DefaultSetup) options.*[!~] $(DISTRO)/build
-	touch $(DISTRO)/build/check_revision
+	cp -v makefile makefile.* config.pl library.objects $(wildcard DefaultSetup) options.*[!~] $(DISTRO)/build
 	cd $(SILAM_ROOT) && find src tests -type f -name '*.f90' -exec cp --parents -vp -t $(abspath $(DISTRO)) {} +
 	cp -vrp ../ini ../docs $(DISTRO)
 	cp ../Makefile ../README.md ../LICENSE ../AGENTS.md ../.gitignore $(DISTRO)

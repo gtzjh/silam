@@ -26,7 +26,6 @@ $(OBJDIR)windfields_3d.mod.o \
 $(OBJDIR)fields_3d.mod.o \
 $(OBJDIR)stacks.mod.o \
 $(OBJDIR)ascii_io.mod.o \
-$(OBJDIR)revision.mod.o \
 $(OBJDIR)optimisation.mod.o \
 $(OBJDIR)photolysis.mod.o \
 $(OBJDIR)grib_code_table.mod.o \

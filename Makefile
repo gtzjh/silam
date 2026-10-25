@@ -5,8 +5,7 @@ SE = gnu
 DefaultSetup = build/DefaultSetup
 SOURCES = $(shell find src -type f -name '*.f90' | LC_ALL=C sort)
 
--include build/Makefile.branch
-PROGRAM = $(BRANCH)
+PROGRAM ?= silam
 include $(DefaultSetup)
 
 .PHONY: all full gnu gnu_debug gnumpi gnumpi_debug conf clean distr dot up tags ctags what

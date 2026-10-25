@@ -1,0 +1,12 @@
+# TeX / BibTeX auxiliary files
+*.aux
+*.bbl
+*.blg
+*.lof
+*.log
+*.lot
+*.toc
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz

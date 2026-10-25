@@ -1,5 +1,6 @@
 bin 
 obj
+/.tmp/
 /build/sourcelist
 kpp/cbm[45]*/*.f90
 kpp/cbm[45]*/*.map
@@ -8,3 +9,27 @@ kpp/src/*.o
 kpp/src/tags
 kpp/int/tags
 
+# Fortran / C compiled objects and module files
+*.o
+*.obj
+*.mod
+*.smod
+
+# Fortran / C libraries and executables
+*.a
+*.so
+*.so.*
+*.dylib
+*.dll
+*.exe
+*.out
+
+# Python bytecode caches
+__pycache__/
+*.py[cod]
+
+# Generic backup and temporary files
+*.bak
+*.backup
+*.tmp
+*~

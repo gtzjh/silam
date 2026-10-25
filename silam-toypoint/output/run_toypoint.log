@@ -1,0 +1,3009 @@
+Hello world! This is silam_v6_1pub GIT-SVN (r608960, aka 480d287a) speaking. PID = 19212
+Running at HostName: Junhong
+compiler_version: GCC version 11.4.0
+compiler_options: -cpp -I /home/junhong/silam/.tmp/silam-setup-20261025-172648/compiler/obj/gnu/ -I /usr/include -I /usr/lib/x86_64-linux-gnu/fortran/gfortran-mod-15 -imultiarch x86_64-linux-gnu -D_REENTRANT -D WITH_BZIP2 -D USE_PROJ6 -mtune=generic -march=x86-64 -g -O3 -fopenmp -ffast-math -fbacktrace -ffree-line-length-none -fpre-include=/usr/include/finclude/math-vector-fortran.h
+Log file name (on start): run_tmp_00019212_Junhong_000.log
+The binary was compiled at Junhong  on  2026-10-25 17:29:42
+Compile-time CWD: /home/junhong/silam/build
+Compile-time WHOAMI: junhong
+command used for diff: git diff 480d287a929e7adfa0fd6a4ff315b4b73d2e3147
+Compile-time GIT HEAD commit: 480d287a929e7adfa0fd6a4ff315b4b73d2e3147
+Output of svn diff at ../source/../build
+diff --git a/build/options.gnu b/build/options.gnu
+index ca18c81..9c14cd6 100644
+--- a/build/options.gnu
++++ b/build/options.gnu
+@@ -11,7 +11,7 @@ FIXED = -ffixed-form
+ PREPROCESS = -x f95-cpp-input  -D WITH_BZIP2 -DUSE_PROJ6
+ FFLAGS = $(OPTIMIZATION) $(DEBUG) $(TESTOPTIONS) $(INCLUDE) -ffree-line-length-none
+ #FFLAGS = $(OPTIMIZATION) $(DEBUG) $(TESTOPTIONS)  $(INCLUDE) -ffree-line-length-none -fbacktrace -msse4.2 #-fdefault-real-8
+-INCLUDE = -I$(OBJDIR) -I/usr/include
++INCLUDE = -I$(OBJDIR) -I/usr/include -I/usr/lib/x86_64-linux-gnu/fortran/gfortran-mod-15
+
+ # netcdf install directory
+ NCDIR =
+
+
+
+
+Output of svn diff at ../source/
+
+
+
+
+Serial version
+SILAM executable parameters:
+File name: /home/junhong/silam/bin/silam_v6_1pub.gnu
+File size, kBytes:  363758.8437500
+Last modification: Sun Oct 25 17:33:11 2026
+Last access: Sun Oct 25 17:33:39 2026
+
+Current directory:/home/junhong/silam/.tmp/toypoint-run-20261025-174729/work
+
+Local time now:2026-10-25_17:47:56+0800
+UTC time now:2026-10-25 09:47:57.0
+Memory usage, kB        17956
+1 argument - use it as control file name
+Control file name: toypoint_mpi.control
+
+
+The following control namelist group v5_3 has been read:
+
+CONTROL_V5_3
+
+LIST = GENERAL_PARAMETERS
+case_name = toypoint
+direction_in_time = FORWARD
+simulation_type = EULERIAN
+start_time = 2017 01 01 06 00 0.0
+computed_period = 6 hr
+time_step = 10 min
+cut_area_source_if_outside_meteo_grid = YES
+computation_accuracy = 5
+END_LIST = GENERAL_PARAMETERS
+
+LIST = MPI_PARALLEL_PARAMETERS
+x_divisions = 1
+y_divisions = 2
+max_wind_speed = 100
+use_mpiio = YES
+use_mpiio_netcdf = YES
+END_LIST = MPI_PARALLEL_PARAMETERS
+
+LIST = DISPERSION_PARAMETERS
+grid_method = OUTPUT_GRID
+vertical_method = OUTPUT_LEVELS
+END_LIST = DISPERSION_PARAMETERS
+
+LIST = METEO_PARAMETERS
+dynamic_meteo_file = GRIB ERA_I-cut/era_interim_europe_%ay4%am2%ad2%ah2+%f2.ml
+dynamic_meteo_file = GRIB ERA_I-cut/era_interim_europe_%ay4%am2%ad2%ah2+%f2.sfc
+dynamic_meteo_file = TEST_FIELD ice_fract SURFACE_LEVEL  0.0
+static_meteo_file = GRIB ERA_I-cut/era_interim_europe_1980010100+0.sfc
+meteo_time_step = 6 hr
+if_wait_for_data = YES
+abl_parameterization_method = FULL_PARAM
+number_of_precipitation_fields = 2
+use_lai = NONE
+END_LIST = METEO_PARAMETERS
+
+LIST = EMISSION_PARAMETERS
+emission_source = EULERIAN  src_point.v5
+cut_area_source_if_outside_meteo_grid = YES
+if_technical_source_dump = NONE
+END_LIST = EMISSION_PARAMETERS
+
+LIST = INITIAL_AND_BOUNDARY_CONDITIONS
+lateral_boundary_type = ZERO
+top_boundary_type = ZERO
+END_LIST = INITIAL_AND_BOUNDARY_CONDITIONS
+
+LIST = TRANSFORMATION_PARAMETERS
+dry_deposition_scheme = KS2011_TF
+wet_deposition_scheme = NO_SCAVENGING
+if_actual_humidity_for_particle_size = YES
+default_relative_humidity = 0.8
+compute_thermodiffusion = NO
+passive_subst_ref_lifetime = 500 day
+passive_subst_ref_tempr = 288
+passive_subst_dLifeTime_dT = -1 min/K
+ADB_if_compute_nucleation = YES
+ADB_nucleation_scheme = KINETIC
+ADB_if_compute_coagulation = YES
+ADB_if_compute_condensation = YES
+ADB_if_compute_cloud_activation = NO
+ADB_if_recalc_wet_d = YES
+if_full_acid_chemistry = YES
+make_coarse_no3 = sslt   0.03
+END_LIST = TRANSFORMATION_PARAMETERS
+
+LIST = OPTICAL_DENSITY_PARAMETERS
+optical_coefficients_depend_on_relative_humidity = YES
+optical_coefficients_depend_on_temperature = YES
+if_split_aerosol_modes = YES
+if_narrow_wave_bands = YES
+END_LIST = OPTICAL_DENSITY_PARAMETERS
+
+LIST = OUTPUT_PARAMETERS
+source_id = NO_SOURCE_SPLIT
+vertical_method = CUSTOM_LAYERS
+level_type = HEIGHT_FROM_SURFACE
+reference_4_low_mass_threshold = CONST
+layer_thickness = 25. 50. 100. 200. 400. 750. 1200. 2000. 2000
+output_time_step = 1 hr
+output_times = REGULAR
+output_format = NETCDF3
+time_split = ALL_IN_ONE
+template = output/%case
+variable_list = output_config.ini
+grid_method = CUSTOM_GRID
+grid_type = lon_lat
+grid_title = GEMS output grid
+resol_flag = 128
+ifReduced = 0
+earth_flag = 0
+wind_component = 0
+reduced_nbr_str = 0
+lon_start = -10.0
+lat_start = 60.0
+nx = 40
+dx = 0.25
+ny = 40
+dy = 0.25
+lat_s_pole = -90.
+lon_s_pole = 0.
+lat_pole_stretch = 0.
+lon_pole_stretch = 0.
+END_LIST = OUTPUT_PARAMETERS
+
+LIST = STANDARD_SETUP
+max_hole_in_meteo_data = 6 hr
+advection_method_eulerian = EULERIAN_V5
+mass_distributor = TRIANGLE_SLAB
+diffuse_vert_cm = YES
+reference_4_low_mass_threshold = CONST
+kz_profile_method = SILAM_ABL_EC_FT_KZ
+advection_method_lagrangian = LAGRANGIAN_WIND_ENDPOINT_3D
+random_walk_method = FULLY_MIXED
+advection_method_default = EULERIAN
+abl_height_method = COMBINATION
+continuity_equation = anelastic_v2
+horizontal_interpolation = LINEAR
+vertical_interpolation = LINEAR
+time_interpolation = LINEAR
+standard_setup_directory = ini
+nuclide_database_fnm = ^silam_nuclides.dat
+chemical_database_fnm = ^silam_chemicals_95_OC.dat
+standard_cocktail_fnm = ^standard_aerosols_cocktails.ini
+standard_cocktail_fnm = ^standard_auxillary_cocktails.ini
+grib_name_table_fnm = ^grib_name_table.silam
+netcdf_name_table_fnm = ^netcdf_name_table.silam
+optical_properties_meta_data_file = ^optical_properties.dat
+photolysis_data_file = ^photolysis_finrose.dat
+timezone_list_fnm = ^tzindex.dat
+allow_zero_forecast_length = NO
+print_debug_info = DEBUG_INFO_YES
+cloud_report_interval = 1
+disregard_meteo_data_sources = YES
+END_LIST = STANDARD_SETUP
+END_CONTROL_V5_3
+
+No-MPI run
+Simulation type         2202
+Expanding paths: ini/tmp.tmp
+No or strange forward_factor:
+Setting forward_factor = 1. (old  behavour of advection)
+No or strange smoother_factor:
+Setting smoother_factor = 1. (no smoothing)
+ *** WARNING: cloud_metric not found in the namelist, using SIZE
+ Place of warning: set_standard_setup
+Reading chemical database from :>>>ini/silam_chemicals_95_OC.dat<<<
+allocating string work            1
+Number of chemical materials set:         1594
+Default depositions assigned for nuclides:         1272
+ *** WARNING: Not a named line:OPTICAL_PROPERTIES
+ Place of warning: fu_read_namelist
+returning REAL work allocated (thread, WA No, size)         0         1  10000000
+returning REAL work allocated (thread, WA No, size)         0         2  10000000
+allocating string work            2
+reading grib_name_table from ini/grib_name_table.silam
+grib_nametable_version            1
+Resetting ECCODES definitions_path from '/usr/share/eccodes/definitions' to 'ini/eccodes/definitions:/usr/share/eccodes/definitions'
+No/empty max_scav_rate_depends_on in control file
+ *** WARNING: Rs for dry deposition is not defined. Using standard
+ Place of warning: set_deposition_rules
+LowMassThresh UseConst
+Memusage at the end of set_chemistry_rules kB       102304
+init_timezones: Using  last sunday of March/October to swith timezone
+Setting source terms
+returning INT work allocated (thread, WA No, size)         0         1  10000000
+returning INT work allocated (thread, WA No, size)         0         2  10000000
+Counting the simple data file "src_point.v5" nSrcRead so far:            0
+TZindexMap not needed
+Memusage after count_sources kB       102940
+Allocating point sources:            1
+Memusage after allocate_source_space kB       103060
+Reading the data file:src_point.v5
+allocating string work            3
+allocating string work            4
+returning REAL work allocated (thread, WA No, size)         0         3  10000000
+Point source name:TOYPOINT
+Source reading, number, memusage, kB            1       103404
+Source reading is over, memusage, kB       103404
+
+All sources used for the run (short report):
+Source:TOYPOINT,
+
+
+Empty initialization namelist, start fields are all-zeroes
+
+Intialising output rules
+Making set_OutDef_basic
+Dump Interval:            0
+Reaction rate dump Interval:            0
+OutDef%Rules%iGrib, OutDef%Rules%iNetCDF      -999999            3
+ *** WARNING: Not a named line:OUTPUT_CONFIG_3_7
+ Place of warning: fu_read_namelist
+
+The list of requested variables in the output config file
+2   emission_rate  [SOURCE_INVENTORY]  AVERAGE   %INTEGRATE_COLUMN
+2   concentration  [FULL_INVENTORY]   AVERAGE
+2   drydep         [TRANSPORT_INVENTORY]   AVERAGE
+2   wetdep         [TRANSPORT_INVENTORY]   AVERAGE
+2  temperature_2m              AVERAGE
+2  u_10m                       AVERAGE
+2  v_10m                       AVERAGE
+2  total_precipitation_rate    AVERAGE
+done read_output_configuration
+
+Basic output parameters intialized from namelist
+=============================================================
+
+Output parameters:
+
+   ------- Grid report of lonlat-grid--GEMS output grid
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -10.0000000       60.0000000              40          40
+   Grid_distance x and y degrees:   0.250000000      0.250000000
+  ------------ End-of-grid-report ------------
+
+Output levels
+   9 layers between constant height levels
+Output interval
+  1h  0min  0.0000sec.
+Output file formats:
+NETCDF
+
+Time series arrangement:
+ALL_IN_ONE
+
+Output template:output/%case
+Rules%MeteoOutLst
+
+The list of output variables is:
+2m temperature [K],2D,undefined          503
+U-component of 10m wind [m/s],2D,undefined          503
+V-component of 10m wind [m/s],2D,undefined          503
+precipitation rate [kg/m2s],2D,undefined          503
+End of output list
+---------------------------------------------------------------
+
+Rules%DispOutLst
+
+The list of output variables is:
+Emission intensity [massunits/s],2D,undefined          503
+Concentration in air,3D,undefined          503
+Cocktail dry deposition,2D,undefined          503
+Cocktail wet deposition,2D,undefined          503
+End of output list
+---------------------------------------------------------------
+
+Rules%MassMapOutLst
+
+The list of output variables is:
+End of output list
+---------------------------------------------------------------
+
+Cloud mass report every output time
+=============================================================
+ end of output parameter report
+
+
+Initialising pollution cloud
+
+Emission species, all environments:            3
+Material: passive, mode GAS gas phase,passive_gas
+Material: PM, mode  fixed/moving diam mode (um):    2.50  10.00   6.00 Nominal diam (um):   6.00, solubility:-999999PM_m6_0
+Material: PM, mode  fixed/moving diam mode (um):   20.00  20.00  20.00 Nominal diam (um):  20.00, solubility:-999999PM_m20
+
+
+Global chemical init. Transport species:            3
+Material: passive, mode GAS gas phase,passive_gas
+Material: PM, mode  fixed/moving diam mode (um):    2.50  10.00   6.00 Nominal diam (um):   6.00, solubility:-999999PM_m6_0
+Material: PM, mode  fixed/moving diam mode (um):   20.00  20.00  20.00 Nominal diam (um):  20.00, solubility:-999999PM_m20
+Mapping emission species to transport ones
+Create_mode_projection: species in
+Material: passive, mode GAS gas phase,passive_gas
+Material: PM, mode  fixed/moving diam mode (um):    2.50  10.00   6.00 Nominal diam (um):   6.00, solubility:-999999PM_m6_0
+Material: PM, mode  fixed/moving diam mode (um):   20.00  20.00  20.00 Nominal diam (um):  20.00, solubility:-999999PM_m20
+
+Create_mode_projection: species mass
+Material: passive, mode GAS gas phase,passive_gas
+Material: PM, mode  fixed/moving diam mode (um):    2.50  10.00   6.00 Nominal diam (um):   6.00, solubility:-999999PM_m6_0
+Material: PM, mode  fixed/moving diam mode (um):   20.00  20.00  20.00 Nominal diam (um):  20.00, solubility:-999999PM_m20
+
+Create_mode_projection: species number
+returning INT work allocated (thread, WA No, size)         0         3  10000000
+returning INT work allocated (thread, WA No, size)         0         4  10000000
+Done emission to transport mapping
+Memusage after init_photoatt_lut  kB       105088
+Strange or no abl_minimal_height in StandardSetup:
+Setting it to 30 m
+ *** WARNING: abl_minimal_height must be real [0..10000]
+ Place of warning: fu_set_wdr_from_namelist
+No land_use_descriptor_file string in control file
+Setting max_hole_in_meteo_data from standard_setup:   6h  0min  0.0000sec.
+ *** WARNING: Please consider moving max_hole_in_meteo_data to meteorological_parameters
+ Place of warning: fu_set_wdr_from_namelist
+Reprojection with randomization
+Vertical velocity computed at half-levels
+
+ *** WARNING: continuity_equation has been deprecated and ignored
+wind_diagnostics =
+can be wind_diagnostics = opentop / hardtop / none
+ *** WARNING: Strange or no wind_diagnostics defined in standard setup,will use winds opentop
+ Place of warning: set_diagnostic_rules
+ *** WARNING: Strange or no stomatal conductance strength in standard setup,will use high, suitable for CB5
+ Place of warning: set_diagnostic_rules
+
+
+Starting SILAM v.5 dispersion run
+returning INT work allocated (thread, WA No, size)         0         5  10000000
+returning INT work allocated (thread, WA No, size)         0         6  10000000
+returning INT work allocated (thread, WA No, size)         0         7  10000000
+ *** WARNING: no quantities given
+ Place of warning: fu_set_shopping_list
+ *** WARNING: No quantities are needed for the transformations
+ Place of warning: define_meteo_input
+Meteo input defined. nQuantities:            0
+Adding output input needs
+Preparing to swap log file to: output/run_toypoint_2026_10_25_09.47.58.7.tmp.log
+
+Initializing NWP data usage.. Steps to store:            2
+input_shopLst dyn
+************************shopping list ******
+Variables in the list:
+between times: 2017-01-01 06:00:0.0 2017-01-01 06:10:0.0 
+no vertical level boundaries
+Quantities we shop:
+U-wind [m/s]                                 
+V-wind [m/s]                                 
+level height from ground [m]                 
+vertical type-dependent surface pressure [Pa]
+Resistance to prev. meteo lvl[s/m]           
+temperature [K]                              
+pressure [Pa]                                
+relative humidity [frac.]                    
+2m relative humidity [frac.]                 
+friction velocity [m/s]                      
+2m temperature [K]                           
+Inverse Monin Obukhov legth scale [m-1]      
+surface roughness meteo [m]                  
+NWP sensible heat flux [W/m2]                
+total cloud cover                            
+fraction of ice[1.0=all ice, 0.0=no ice]     
+ground pressure [Pa]                         
+U-component of 10m wind [m/s]                
+V-component of 10m wind [m/s]                
+*************************************
+input_shopLst st
+************************shopping list ******
+Variables in the list:
+between times: 2017-01-01 06:00:0.0 2017-01-01 06:10:0.0 
+no vertical level boundaries
+Quantities we shop:
+fraction of land [1.0=all land, 0.0=all water
+precipitation rate [kg/m2s]                  
+relief height [m]                            
+*************************************
+Dynamic quantity:U-wind [m/s]
+Assumed initial meteo quantity:U_wind
+Dynamic quantity:V-wind [m/s]
+Assumed initial meteo quantity:V_wind
+Dynamic quantity:level height from ground [m]
+Dynamic quantity:vertical type-dependent surface pressure [Pa]
+Assumed initial meteo quantity:vrt_dep_srf_pr
+Dynamic quantity:Resistance to prev. meteo lvl[s/m]
+Add shopping quantity:kappaustar, aka Kz_scalar_1m [m/s]
+Add shopping quantity:boundary layer height from ground [m]
+Add shopping quantity:specific humidity [kg/kg]
+Dynamic quantity:temperature [K]
+Add shopping quantity:perturbation pot temperature [K]
+Dynamic quantity:pressure [Pa]
+Dynamic quantity:relative humidity [frac.]
+Dynamic quantity:2m relative humidity [frac.]
+Add shopping quantity:2m specific humidity [kg/kg]
+Dynamic quantity:friction velocity [m/s]
+Add shopping quantity:10m wind speed [m/s]
+Dynamic quantity:2m temperature [K]
+Assumed initial meteo quantity:temp_2m
+Dynamic quantity:Inverse Monin Obukhov legth scale [m-1]
+Dynamic quantity:surface roughness meteo [m]
+Add shopping quantity:land surface roughness meteo [m]
+Dynamic quantity:NWP sensible heat flux [W/m2]
+Add shopping quantity:NWP ac.sensible heat flux [J/m2]
+Dynamic quantity:total cloud cover
+Add shopping quantity:cloud cover [fract]
+Dynamic quantity:fraction of ice[1.0=all ice, 0.0=no ice]
+Assumed initial meteo quantity:ice_fract
+Dynamic quantity:ground pressure [Pa]
+Add shopping quantity:logarithm of surface pressure
+Dynamic quantity:U-component of 10m wind [m/s]
+Assumed initial meteo quantity:U_wind_10m
+Dynamic quantity:V-component of 10m wind [m/s]
+Assumed initial meteo quantity:V_wind_10m
+Singletime quantity:precipitation rate [kg/m2s]
+Add shopping quantity:tot.precipitation acc.[kg/m2]
+Dynamic quantity:U-wind [m/s]
+Assumed initial meteo quantity:U_wind
+Dynamic quantity:V-wind [m/s]
+Assumed initial meteo quantity:V_wind
+Dynamic quantity:level height from ground [m]
+Dynamic quantity:vertical type-dependent surface pressure [Pa]
+Assumed initial meteo quantity:vrt_dep_srf_pr
+Dynamic quantity:Resistance to prev. meteo lvl[s/m]
+Dynamic quantity:temperature [K]
+Dynamic quantity:pressure [Pa]
+Dynamic quantity:relative humidity [frac.]
+Dynamic quantity:2m relative humidity [frac.]
+Dynamic quantity:friction velocity [m/s]
+Dynamic quantity:2m temperature [K]
+Assumed initial meteo quantity:temp_2m
+Dynamic quantity:Inverse Monin Obukhov legth scale [m-1]
+Dynamic quantity:surface roughness meteo [m]
+Dynamic quantity:NWP sensible heat flux [W/m2]
+Dynamic quantity:total cloud cover
+Dynamic quantity:fraction of ice[1.0=all ice, 0.0=no ice]
+Assumed initial meteo quantity:ice_fract
+Dynamic quantity:ground pressure [Pa]
+Dynamic quantity:U-component of 10m wind [m/s]
+Assumed initial meteo quantity:U_wind_10m
+Dynamic quantity:V-component of 10m wind [m/s]
+Assumed initial meteo quantity:V_wind_10m
+Dynamic quantity:kappaustar, aka Kz_scalar_1m [m/s]
+Dynamic quantity:boundary layer height from ground [m]
+Dynamic quantity:specific humidity [kg/kg]
+Assumed initial meteo quantity:spec_humid
+Dynamic quantity:perturbation pot temperature [K]
+Assumed initial meteo quantity:pert_pot_temp
+Dynamic quantity:2m specific humidity [kg/kg]
+Add shopping quantity:dew point temperature 2m [K]
+Dynamic quantity:10m wind speed [m/s]
+Dynamic quantity:NWP ac.sensible heat flux [J/m2]
+Assumed initial meteo quantity:nwp_acc_sns_hfl
+Dynamic quantity:cloud cover [fract]
+Assumed initial meteo quantity:cloud_cover
+Dynamic quantity:logarithm of surface pressure
+Add shopping quantity:mean sea level pressure [Pa]
+Dynamic quantity:tot.precipitation acc.[kg/m2]
+Add shopping quantity:accumulated large scale rain [kg/m2]
+Add shopping quantity:accumulated convective rain [kg/m2]
+Singletime quantity:precipitation rate [kg/m2s]
+Dynamic quantity:U-wind [m/s]
+Assumed initial meteo quantity:U_wind
+Dynamic quantity:V-wind [m/s]
+Assumed initial meteo quantity:V_wind
+Dynamic quantity:level height from ground [m]
+Dynamic quantity:vertical type-dependent surface pressure [Pa]
+Assumed initial meteo quantity:vrt_dep_srf_pr
+Dynamic quantity:Resistance to prev. meteo lvl[s/m]
+Dynamic quantity:temperature [K]
+Dynamic quantity:pressure [Pa]
+Dynamic quantity:relative humidity [frac.]
+Dynamic quantity:2m relative humidity [frac.]
+Dynamic quantity:friction velocity [m/s]
+Dynamic quantity:2m temperature [K]
+Assumed initial meteo quantity:temp_2m
+Dynamic quantity:Inverse Monin Obukhov legth scale [m-1]
+Dynamic quantity:surface roughness meteo [m]
+Dynamic quantity:NWP sensible heat flux [W/m2]
+Dynamic quantity:total cloud cover
+Dynamic quantity:fraction of ice[1.0=all ice, 0.0=no ice]
+Assumed initial meteo quantity:ice_fract
+Dynamic quantity:ground pressure [Pa]
+Dynamic quantity:U-component of 10m wind [m/s]
+Assumed initial meteo quantity:U_wind_10m
+Dynamic quantity:V-component of 10m wind [m/s]
+Assumed initial meteo quantity:V_wind_10m
+Dynamic quantity:kappaustar, aka Kz_scalar_1m [m/s]
+Dynamic quantity:boundary layer height from ground [m]
+Dynamic quantity:specific humidity [kg/kg]
+Assumed initial meteo quantity:spec_humid
+Dynamic quantity:perturbation pot temperature [K]
+Assumed initial meteo quantity:pert_pot_temp
+Dynamic quantity:2m specific humidity [kg/kg]
+Dynamic quantity:10m wind speed [m/s]
+Dynamic quantity:NWP ac.sensible heat flux [J/m2]
+Assumed initial meteo quantity:nwp_acc_sns_hfl
+Dynamic quantity:cloud cover [fract]
+Assumed initial meteo quantity:cloud_cover
+Dynamic quantity:logarithm of surface pressure
+Dynamic quantity:tot.precipitation acc.[kg/m2]
+Dynamic quantity:dew point temperature 2m [K]
+Assumed initial meteo quantity:dew_p_temp2m
+Dynamic quantity:mean sea level pressure [Pa]
+Assumed initial meteo quantity:sea_lev_pr
+Dynamic quantity:accumulated large scale rain [kg/m2]
+Assumed initial meteo quantity:acc_ls_rain
+Dynamic quantity:accumulated convective rain [kg/m2]
+Assumed initial meteo quantity:acc_conv_rain
+Singletime quantity:precipitation rate [kg/m2s]
+Opening GRIB file i: ERA_I-cut/era_interim_europe_2017010100+06.ml
+allocating gf%grib_raw size (kB)          333
+Opened GRIB file 1: ERA_I-cut/era_interim_europe_2017010100+06.ml Memory usage (kB), time (ms)       146512       0.4317390
+open_grib_file_i timings (ms): read_stream, parse_stream, lables_xcg, stream_xcg  0.39261E+00  0.35474E-01  0.00000E+00  0.36510E-02
+Opening GRIB file i: ERA_I-cut/era_interim_europe_2017010100+06.sfc
+Opened GRIB file 1: ERA_I-cut/era_interim_europe_2017010100+06.sfc Memory usage (kB), time (ms)       176484       0.0350570
+open_grib_file_i timings (ms): read_stream, parse_stream, lables_xcg, stream_xcg  0.32761E-01  0.21910E-02  0.00000E+00  0.10500E-03
+
+analyse_input_content got list for  shopping:
+************************shopping list ******
+Variables in the list:
+between times: 2017-01-01 06:00:0.0 2017-01-01 06:10:0.0 
+no vertical level boundaries
+Quantities we shop:
+U-wind [m/s]                                 
+V-wind [m/s]                                 
+level height from ground [m]                 
+vertical type-dependent surface pressure [Pa]
+Resistance to prev. meteo lvl[s/m]           
+temperature [K]                              
+pressure [Pa]                                
+relative humidity [frac.]                    
+2m relative humidity [frac.]                 
+friction velocity [m/s]                      
+2m temperature [K]                           
+Inverse Monin Obukhov legth scale [m-1]      
+surface roughness meteo [m]                  
+NWP sensible heat flux [W/m2]                
+total cloud cover                            
+fraction of ice[1.0=all ice, 0.0=no ice]     
+ground pressure [Pa]                         
+U-component of 10m wind [m/s]                
+V-component of 10m wind [m/s]                
+*************************************
+Add shopping quantity:tot.precipitation acc.[kg/m2]
+Existing variables in the file (any grid and vertical)
+temperature [K]       240000
+specific humidity [kg/kg]       240028
+cloud cover [fract]       240023
+U-wind [m/s]       240006
+V-wind [m/s]       240007
+U-component of 10m wind [m/s]       250010
+V-component of 10m wind [m/s]       250012
+2m temperature [K]       250001
+dew point temperature 2m [K]       250003
+mean sea level pressure [Pa]       250133
+total cloud cover       250139
+surface roughness meteo [m]       250039
+ground pressure [Pa]       250132
+NWP ac.sensible heat flux [J/m2]       250110
+tot.precipitation acc.[kg/m2]       250074
+accumulated large scale rain [kg/m2]       250070
+accumulated convective rain [kg/m2]       250071
+fraction of ice[1.0=all ice, 0.0=no ice]       250026
+All grids from meteofile:
+   ------- Grid report of lonlat-grid--reg_latlon_grid_from_grib                                                       
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -11.5200005       58.3199997              18          18
+   Grid_distance x and y degrees:   0.720000029      0.720000029    
+  ------------ End-of-grid-report ------------
+   ------- Grid report of lonlat-grid--coarse global geographical grid                                                 
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -180.000000      -90.0000000              36          18
+   Grid_distance x and y degrees:    10.0000000       10.0000000    
+  ------------ End-of-grid-report ------------
+Input analysis Checking:U_wind
+Done:U_wind
+Input analysis Checking:V_wind
+Done:V_wind
+Input analysis Checking:lev_height
+Done:lev_height
+Input analysis Checking:vrt_dep_srf_pr
+Done:vrt_dep_srf_pr
+Input analysis Checking:R_down_met
+Done:R_down_met
+Input analysis Checking:temperature
+Done:temperature
+Input analysis Checking:pressure
+Done:pressure
+Input analysis Checking:rel_humid
+Done:rel_humid
+Input analysis Checking:relat_humid_2m
+Done:relat_humid_2m
+Input analysis Checking:fric_vel
+Done:fric_vel
+Input analysis Checking:temp_2m
+Done:temp_2m
+Input analysis Checking:MO_len_inv
+Done:MO_len_inv
+Input analysis Checking:srf_rough_met
+Done:srf_rough_met
+Input analysis Checking:nwp_sens_hflux
+Done:nwp_sens_hflux
+Input analysis Checking:total_cloud
+Done:total_cloud
+Input analysis Checking:ice_fract
+Done:ice_fract
+Input analysis Checking:gr_surf_pr
+Done:gr_surf_pr
+Input analysis Checking:U_wind_10m
+Done:U_wind_10m
+Input analysis Checking:V_wind_10m
+Done:V_wind_10m
+Input analysis Checking:tot_prec
+Done:tot_prec
+Checking again:U_wind
+ *** WARNING: Undefined shList given
+ Place of warning: add_shopping_var_by_params
+Added to shopping shList (by params):U-wind [m/s],undefined
+Checking again:V_wind
+Added to shopping shList (by params):V-wind [m/s],undefined
+Checking again:lev_height
+Added to shopping shList (by params):temperature [K],undefined
+Added to shopping shList (by params):ground pressure [Pa],undefined
+Checking again:vrt_dep_srf_pr
+Checking again:R_down_met
+Added to shopping shList (by params):2m temperature [K],undefined
+Added to shopping shList (by params):U-component of 10m wind [m/s],undefined
+Added to shopping shList (by params):V-component of 10m wind [m/s],undefined
+Added to shopping shList (by params):specific humidity [kg/kg],undefined
+Added to shopping shList (by params):dew point temperature 2m [K],undefined
+Checking again:temperature
+Checking again:pressure
+Checking again:rel_humid
+Checking again:relat_humid_2m
+Checking again:fric_vel
+Checking again:temp_2m
+Checking again:MO_len_inv
+Checking again:srf_rough_met
+Added to shopping shList (by params):surface roughness meteo [m],undefined
+Checking again:nwp_sens_hflux
+Added to shopping shList (by params):NWP ac.sensible heat flux [J/m2],undefined
+Checking again:total_cloud
+Added to shopping shList (by params):total cloud cover,undefined
+Checking again:ice_fract
+Added to shopping shList (by params):fraction of ice[1.0=all ice, 0.0=no ice],undefined
+Checking again:gr_surf_pr
+Checking again:U_wind_10m
+Checking again:V_wind_10m
+Checking again:tot_prec
+Added to shopping shList (by params):tot.precipitation acc.[kg/m2],undefined
+All verticals in the meteo file
+  36 layers between hybrid levels
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   25   8765.05   0.0000758   8772.74  26  10376.12   0.0004614  10422.88
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   26  10376.12   0.0004614  10422.88  27  12077.45   0.0018152  12261.37
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   27  12077.45   0.0018152  12261.37  28  13775.32   0.0050811  14290.17
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   28  13775.32   0.0050811  14290.17  29  15379.80   0.0111429  16508.86
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   29  15379.80   0.0111429  16508.86  30  16819.47   0.0206779  18914.66
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   30  16819.47   0.0206779  18914.66  31  18045.18   0.0341212  21502.51
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   31  18045.18   0.0341212  21502.51  32  19027.70   0.0516904  24265.23
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   32  19027.70   0.0516904  24265.23  33  19755.11   0.0735338  27205.93
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   33  19755.11   0.0735338  27205.93  34  20222.20   0.0996747  30321.74
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   34  20222.20   0.0996747  30321.74  35  20429.86   0.1300225  33604.39
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   35  20429.86   0.1300225  33604.39  36  20384.48   0.1643843  37040.72
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   36  20384.48   0.1643843  37040.72  37  20097.40   0.2024759  40613.27
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   37  20097.40   0.2024759  40613.27  38  19584.33   0.2439331  44300.85
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   38  19584.33   0.2439331  44300.85  39  18864.75   0.2883230  48079.08
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   39  18864.75   0.2883230  48079.08  40  17961.36   0.3351549  51920.93
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   40  17961.36   0.3351549  51920.93  41  16899.47   0.3838921  55797.34
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   41  16899.47   0.3838921  55797.34  42  15706.45   0.4339629  59677.75
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   42  15706.45   0.4339629  59677.75  43  14411.12   0.4847715  63530.60
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   43  14411.12   0.4847715  63530.60  44  13043.22   0.5357099  67324.03
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   44  13043.22   0.5357099  67324.03  45  11632.76   0.5861684  71026.27
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   45  11632.76   0.5861684  71026.27  46  10209.50   0.6355475  74606.34
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   46  10209.50   0.6355475  74606.34  47   8802.36   0.6832686  78034.55
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   47   8802.36   0.6832686  78034.55  48   7438.80   0.7287858  81283.02
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   48   7438.80   0.7287858  81283.02  49   6144.32   0.7715966  84326.34
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   49   6144.32   0.7715966  84326.34  50   4941.78   0.8112534  87142.03
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   50   4941.78   0.8112534  87142.03  51   3850.91   0.8473749  89711.18
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   51   3850.91   0.8473749  89711.18  52   2887.70   0.8796569  92018.93
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   52   2887.70   0.8796569  92018.93  53   2063.78   0.9078839  94055.12
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   53   2063.78   0.9078839  94055.12  54   1385.91   0.9319403  95814.77
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   54   1385.91   0.9319403  95814.77  55    855.36   0.9518215  97298.67
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   55    855.36   0.9518215  97298.67  56    467.33   0.9676452  98513.99
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   56    467.33   0.9676452  98513.99  57    210.39   0.9796627  99474.72
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   57    210.39   0.9796627  99474.72  58     65.89   0.9882701 100202.36
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   58     65.89   0.9882701 100202.36  59      7.37   0.9940194 100726.39
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   59      7.37   0.9940194 100726.39  60      0.00   0.9976301 101084.88
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   60      0.00   0.9976301 101084.88  61      0.00   1.0000000 101325.00
+   2 constant height levels
+ Constant height level, height      10.00m
+ Constant height level, height       2.00m
+ Funny but surface vertical
+ Surface level
+ Funny but surface vertical
+ Surface level
+ Funny but surface vertical
+ Surface level
+ *** WARNING: No wind fields are found in the input content
+ Place of warning: analyse_input_content
+Assumed initial meteo quantity:land_fract
+Assumed initial meteo quantity:land_fract
+
+-----------The input shopping list is:-----------
+************************shopping list ******
+Variables in the list:
+Quantity (mandatory)U-wind [m/s]
+Species:undefined
+  36 layers between hybrid levels
+   ------- Grid report of lonlat-grid--reg_latlon_grid_from_grib                                                       
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -11.5200005       58.3199997              18          18
+   Grid_distance x and y degrees:   0.720000029      0.720000029    
+  ------------ End-of-grid-report ------------
+Meteo data source:
+Centre:           98
+subCentre:            0
+ Model:          128
+Quantity (mandatory)V-wind [m/s]
+Species:undefined
+  36 layers between hybrid levels
+   ------- Grid report of lonlat-grid--reg_latlon_grid_from_grib                                                       
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -11.5200005       58.3199997              18          18
+   Grid_distance x and y degrees:   0.720000029      0.720000029    
+  ------------ End-of-grid-report ------------
+Meteo data source:
+Centre:           98
+subCentre:            0
+ Model:          128
+Quantity (mandatory)temperature [K]
+Species:undefined
+  36 layers between hybrid levels
+   ------- Grid report of lonlat-grid--reg_latlon_grid_from_grib                                                       
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -11.5200005       58.3199997              18          18
+   Grid_distance x and y degrees:   0.720000029      0.720000029    
+  ------------ End-of-grid-report ------------
+Meteo data source:
+Centre:           98
+subCentre:            0
+ Model:          128
+Quantity (mandatory)ground pressure [Pa]
+Species:undefined
+ Funny but surface vertical
+   ------- Grid report of lonlat-grid--reg_latlon_grid_from_grib                                                       
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -11.5200005       58.3199997              18          18
+   Grid_distance x and y degrees:   0.720000029      0.720000029    
+  ------------ End-of-grid-report ------------
+Meteo data source:
+Centre:           98
+subCentre:            0
+ Model:          128
+Quantity (mandatory)2m temperature [K]
+Species:undefined
+   2 constant height levels
+   ------- Grid report of lonlat-grid--reg_latlon_grid_from_grib                                                       
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -11.5200005       58.3199997              18          18
+   Grid_distance x and y degrees:   0.720000029      0.720000029    
+  ------------ End-of-grid-report ------------
+Meteo data source:
+Centre:           98
+subCentre:            0
+ Model:          128
+Quantity (mandatory)U-component of 10m wind [m/s]
+Species:undefined
+   2 constant height levels
+   ------- Grid report of lonlat-grid--reg_latlon_grid_from_grib                                                       
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -11.5200005       58.3199997              18          18
+   Grid_distance x and y degrees:   0.720000029      0.720000029    
+  ------------ End-of-grid-report ------------
+Meteo data source:
+Centre:           98
+subCentre:            0
+ Model:          128
+Quantity (mandatory)V-component of 10m wind [m/s]
+Species:undefined
+   2 constant height levels
+   ------- Grid report of lonlat-grid--reg_latlon_grid_from_grib                                                       
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -11.5200005       58.3199997              18          18
+   Grid_distance x and y degrees:   0.720000029      0.720000029    
+  ------------ End-of-grid-report ------------
+Meteo data source:
+Centre:           98
+subCentre:            0
+ Model:          128
+Quantity (mandatory)specific humidity [kg/kg]
+Species:undefined
+  36 layers between hybrid levels
+   ------- Grid report of lonlat-grid--reg_latlon_grid_from_grib                                                       
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -11.5200005       58.3199997              18          18
+   Grid_distance x and y degrees:   0.720000029      0.720000029    
+  ------------ End-of-grid-report ------------
+Meteo data source:
+Centre:           98
+subCentre:            0
+ Model:          128
+Quantity (mandatory)dew point temperature 2m [K]
+Species:undefined
+   2 constant height levels
+   ------- Grid report of lonlat-grid--reg_latlon_grid_from_grib                                                       
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -11.5200005       58.3199997              18          18
+   Grid_distance x and y degrees:   0.720000029      0.720000029    
+  ------------ End-of-grid-report ------------
+Meteo data source:
+Centre:           98
+subCentre:            0
+ Model:          128
+Quantity (mandatory)surface roughness meteo [m]
+Species:undefined
+ Funny but surface vertical
+   ------- Grid report of lonlat-grid--reg_latlon_grid_from_grib                                                       
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -11.5200005       58.3199997              18          18
+   Grid_distance x and y degrees:   0.720000029      0.720000029    
+  ------------ End-of-grid-report ------------
+Meteo data source:
+Centre:           98
+subCentre:            0
+ Model:          128
+Quantity (mandatory)NWP ac.sensible heat flux [J/m2]
+Species:undefined
+ Funny but surface vertical
+   ------- Grid report of lonlat-grid--reg_latlon_grid_from_grib                                                       
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -11.5200005       58.3199997              18          18
+   Grid_distance x and y degrees:   0.720000029      0.720000029    
+  ------------ End-of-grid-report ------------
+Meteo data source:
+Centre:           98
+subCentre:            0
+ Model:          128
+Quantity (mandatory)total cloud cover
+Species:undefined
+ Funny but surface vertical
+   ------- Grid report of lonlat-grid--reg_latlon_grid_from_grib                                                       
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -11.5200005       58.3199997              18          18
+   Grid_distance x and y degrees:   0.720000029      0.720000029    
+  ------------ End-of-grid-report ------------
+Meteo data source:
+Centre:           98
+subCentre:            0
+ Model:          128
+Quantity (mandatory)fraction of ice[1.0=all ice, 0.0=no ice]
+Species:undefined
+ Funny but surface vertical
+   ------- Grid report of lonlat-grid--coarse global geographical grid                                                 
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -180.000000      -90.0000000              36          18
+   Grid_distance x and y degrees:    10.0000000       10.0000000    
+  ------------ End-of-grid-report ------------
+Meteo data source:SILAM_internal_data_source
+Centre:           86
+subCentre:      -999999
+ Model:         1002
+Quantity (mandatory)tot.precipitation acc.[kg/m2]
+Species:undefined
+ Funny but surface vertical
+   ------- Grid report of lonlat-grid--reg_latlon_grid_from_grib                                                       
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -11.5200005       58.3199997              18          18
+   Grid_distance x and y degrees:   0.720000029      0.720000029    
+  ------------ End-of-grid-report ------------
+Meteo data source:
+Centre:           98
+subCentre:            0
+ Model:          255
+all times accepted
+no vertical level boundaries
+Quantities we shop:
+*************************************
+
+
+
+
+-----------The full shopping list is:-----------
+************************shopping list ******
+Variables in the list:
+between times: 2017-01-01 06:00:0.0 2017-01-01 06:10:0.0 
+no vertical level boundaries
+Quantities we shop:
+U-wind [m/s]                                 
+V-wind [m/s]                                 
+temperature [K]                              
+ground pressure [Pa]                         
+2m temperature [K]                           
+U-component of 10m wind [m/s]                
+V-component of 10m wind [m/s]                
+specific humidity [kg/kg]                    
+dew point temperature 2m [K]                 
+surface roughness meteo [m]                  
+NWP ac.sensible heat flux [J/m2]             
+total cloud cover                            
+fraction of ice[1.0=all ice, 0.0=no ice]     
+tot.precipitation acc.[kg/m2]                
+level height from ground [m]                 
+vertical type-dependent surface pressure [Pa]
+Resistance to prev. meteo lvl[s/m]           
+pressure [Pa]                                
+relative humidity [frac.]                    
+2m relative humidity [frac.]                 
+friction velocity [m/s]                      
+Inverse Monin Obukhov legth scale [m-1]      
+NWP sensible heat flux [W/m2]                
+kappaustar, aka Kz_scalar_1m [m/s]           
+10m wind speed [m/s]                         
+2m specific humidity [kg/kg]                 
+boundary layer height from ground [m]        
+precipitation rate [kg/m2s]                  
+*************************************
+
+------------------------------------------------------
+                 Meteorological grid:
+   ------- Grid report of lonlat-grid--reg_latlon_grid_from_grib                                                       
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -11.5200005       58.3199997              18          18
+   Grid_distance x and y degrees:   0.720000029      0.720000029    
+  ------------ End-of-grid-report ------------
+
+------------------------------------------------------
+                  METEO VERTICAL final:
+  36 layers between hybrid levels
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   60      0.00   0.9976301 101084.88  61      0.00   1.0000000 101325.00
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   59      7.37   0.9940194 100726.39  60      0.00   0.9976301 101084.88
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   58     65.89   0.9882701 100202.36  59      7.37   0.9940194 100726.39
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   57    210.39   0.9796627  99474.72  58     65.89   0.9882701 100202.36
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   56    467.33   0.9676452  98513.99  57    210.39   0.9796627  99474.72
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   55    855.36   0.9518215  97298.67  56    467.33   0.9676452  98513.99
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   54   1385.91   0.9319403  95814.77  55    855.36   0.9518215  97298.67
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   53   2063.78   0.9078839  94055.12  54   1385.91   0.9319403  95814.77
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   52   2887.70   0.8796569  92018.93  53   2063.78   0.9078839  94055.12
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   51   3850.91   0.8473749  89711.18  52   2887.70   0.8796569  92018.93
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   50   4941.78   0.8112534  87142.03  51   3850.91   0.8473749  89711.18
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   49   6144.32   0.7715966  84326.34  50   4941.78   0.8112534  87142.03
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   48   7438.80   0.7287858  81283.02  49   6144.32   0.7715966  84326.34
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   47   8802.36   0.6832686  78034.55  48   7438.80   0.7287858  81283.02
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   46  10209.50   0.6355475  74606.34  47   8802.36   0.6832686  78034.55
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   45  11632.76   0.5861684  71026.27  46  10209.50   0.6355475  74606.34
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   44  13043.22   0.5357099  67324.03  45  11632.76   0.5861684  71026.27
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   43  14411.12   0.4847715  63530.60  44  13043.22   0.5357099  67324.03
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   42  15706.45   0.4339629  59677.75  43  14411.12   0.4847715  63530.60
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   41  16899.47   0.3838921  55797.34  42  15706.45   0.4339629  59677.75
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   40  17961.36   0.3351549  51920.93  41  16899.47   0.3838921  55797.34
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   39  18864.75   0.2883230  48079.08  40  17961.36   0.3351549  51920.93
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   38  19584.33   0.2439331  44300.85  39  18864.75   0.2883230  48079.08
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   37  20097.40   0.2024759  40613.27  38  19584.33   0.2439331  44300.85
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   36  20384.48   0.1643843  37040.72  37  20097.40   0.2024759  40613.27
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   35  20429.86   0.1300225  33604.39  36  20384.48   0.1643843  37040.72
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   34  20222.20   0.0996747  30321.74  35  20429.86   0.1300225  33604.39
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   33  19755.11   0.0735338  27205.93  34  20222.20   0.0996747  30321.74
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   32  19027.70   0.0516904  24265.23  33  19755.11   0.0735338  27205.93
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   31  18045.18   0.0341212  21502.51  32  19027.70   0.0516904  24265.23
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   30  16819.47   0.0206779  18914.66  31  18045.18   0.0341212  21502.51
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   29  15379.80   0.0111429  16508.86  30  16819.47   0.0206779  18914.66
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   28  13775.32   0.0050811  14290.17  29  15379.80   0.0111429  16508.86
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   27  12077.45   0.0018152  12261.37  28  13775.32   0.0050811  14290.17
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   26  10376.12   0.0004614  10422.88  27  12077.45   0.0018152  12261.37
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   25   8765.05   0.0000758   8772.74  26  10376.12   0.0004614  10422.88
+------------------------------------------------------
+
+Initializing meteo_market multitime  n_flds n_flds3d          318            8
+Initializing meteo_market singletime  n_flds n_flds3d           14            0
+meteo market is initialized
+----------------------- Final OUTPUT GRID  -------------------------
+   ------- Grid report of lonlat-grid--GEMS output grid                                                                
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -10.0000000       60.0000000              40          40
+   Grid_distance x and y degrees:   0.250000000      0.250000000    
+  ------------ End-of-grid-report ------------
+
+
+======================= DISPERSION GRID ========================
+   ------- Grid report of lonlat-grid--GEMS output grid                                                                
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -10.0000000       60.0000000              40          40
+   Grid_distance x and y degrees:   0.250000000      0.250000000    
+  ------------ End-of-grid-report ------------
+----------------------------------------------------------------
+
+Selecting meteo grid (for this MPI sub domain)
+
+============== This MPI subdomain METEOROLOGICAL GRID ================
+   ------- Grid report of lonlat-grid--reg_latlon_grid_from_grib_cut                                                   
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -10.8000002       59.7599983              16          16
+   Grid_distance x and y degrees:   0.720000029      0.720000029    
+  ------------ End-of-grid-report ------------
+----------------------------------------------------------------
+
+Setting physiography with the following vars:
+************************shopping list ******
+Variables in the list:
+between times: 2017-01-01 06:00:0.0 2017-01-01 06:10:0.0 
+no vertical level boundaries
+Quantities we shop:
+fraction of land [1.0=all land, 0.0=all water
+precipitation rate [kg/m2s]                  
+relief height [m]                            
+*************************************
+Searching fields with the meteo_grid-corresponding grid
+ *** WARNING: Undefined shList given
+ Place of warning: add_shopping_var_by_params
+Added to shopping shList (by params):fraction of land [1.0=all land, 0.0=all water,undefined
+Added to shopping shList (by params):precipitation rate [kg/m2s],undefined
+Added to shopping shList (by params):relief height [m],undefined
+Added to shopping shList (by params):geopotential surface [m2/s2],undefined
+Added to shopping shList (by params):x-size of the grid cell,undefined
+Added to shopping shList (by params):y-size of the grid cell,undefined
+Added to shopping shList (by params):longitude [deg],undefined
+Added to shopping shList (by params):latitude [deg],undefined
+Q_shop(1:n_req)    250027    250075    250020    250021    250024    250025    250022    250023
+Storing to supermarket meteo_market singletime: ERA_I-cut/era_interim_europe_1980010100+0.sfc
+Opening GRIB file i: ERA_I-cut/era_interim_europe_1980010100+0.sfc
+Opened GRIB file 1: ERA_I-cut/era_interim_europe_1980010100+0.sfc Memory usage (kB), time (ms)       177132       0.0422560
+open_grib_file_i timings (ms): read_stream, parse_stream, lables_xcg, stream_xcg  0.38917E-01  0.32350E-02  0.10400E-03  0.00000E+00
+Allocate linear hor structure: #:            2
+returning INT work allocated (thread, WA No, size)         0         8  10000000
+Simplified same-pole reprojection
+Switch: iOutside = nearest
+Finished averaging/sum structure
+Storing (IDlist, find storage, stores)  took ms         5         0         0
+
+Searching other grids and interpolate to meteo_grid
+Q_shop(1:n_req)    250075    250021
+Storing to supermarket meteo_market singletime: ERA_I-cut/era_interim_europe_1980010100+0.sfc
+Opening GRIB file i: ERA_I-cut/era_interim_europe_1980010100+0.sfc
+Opened GRIB file 1: ERA_I-cut/era_interim_europe_1980010100+0.sfc Memory usage (kB), time (ms)       177240       0.0502900
+open_grib_file_i timings (ms): read_stream, parse_stream, lables_xcg, stream_xcg  0.48099E-01  0.20870E-02  0.00000E+00  0.10400E-03
+Storing (IDlist, find storage, stores)  took ms         5         0         0
+Attempting to cut the vertical size. Current one is:
+  36 layers between hybrid levels
+Max relief height [m] and vertical to be covered are:      16.5175171
+   9 layers between constant height levels
+Cut vertical from above without relief. Suggested nLevels =           23
+Suggestion with relief:           25
+Cut vertical from above with relief. New nLevels =           25
+
+========================= METEO VERTICAL ==========================
+  28 layers between hybrid levels
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   60      0.00   0.9976301 101084.88  61      0.00   1.0000000 101325.00
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   59      7.37   0.9940194 100726.39  60      0.00   0.9976301 101084.88
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   58     65.89   0.9882701 100202.36  59      7.37   0.9940194 100726.39
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   57    210.39   0.9796627  99474.72  58     65.89   0.9882701 100202.36
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   56    467.33   0.9676452  98513.99  57    210.39   0.9796627  99474.72
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   55    855.36   0.9518215  97298.67  56    467.33   0.9676452  98513.99
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   54   1385.91   0.9319403  95814.77  55    855.36   0.9518215  97298.67
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   53   2063.78   0.9078839  94055.12  54   1385.91   0.9319403  95814.77
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   52   2887.70   0.8796569  92018.93  53   2063.78   0.9078839  94055.12
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   51   3850.91   0.8473749  89711.18  52   2887.70   0.8796569  92018.93
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   50   4941.78   0.8112534  87142.03  51   3850.91   0.8473749  89711.18
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   49   6144.32   0.7715966  84326.34  50   4941.78   0.8112534  87142.03
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   48   7438.80   0.7287858  81283.02  49   6144.32   0.7715966  84326.34
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   47   8802.36   0.6832686  78034.55  48   7438.80   0.7287858  81283.02
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   46  10209.50   0.6355475  74606.34  47   8802.36   0.6832686  78034.55
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   45  11632.76   0.5861684  71026.27  46  10209.50   0.6355475  74606.34
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   44  13043.22   0.5357099  67324.03  45  11632.76   0.5861684  71026.27
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   43  14411.12   0.4847715  63530.60  44  13043.22   0.5357099  67324.03
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   42  15706.45   0.4339629  59677.75  43  14411.12   0.4847715  63530.60
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   41  16899.47   0.3838921  55797.34  42  15706.45   0.4339629  59677.75
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   40  17961.36   0.3351549  51920.93  41  16899.47   0.3838921  55797.34
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   39  18864.75   0.2883230  48079.08  40  17961.36   0.3351549  51920.93
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   38  19584.33   0.2439331  44300.85  39  18864.75   0.2883230  48079.08
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   37  20097.40   0.2024759  40613.27  38  19584.33   0.2439331  44300.85
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   36  20384.48   0.1643843  37040.72  37  20097.40   0.2024759  40613.27
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   35  20429.86   0.1300225  33604.39  36  20384.48   0.1643843  37040.72
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   34  20222.20   0.0996747  30321.74  35  20429.86   0.1300225  33604.39
+ Layer btw 2 hybrid: nbr, a, b, stdpress:   33  19755.11   0.0735338  27205.93  34  20222.20   0.0996747  30321.74
+----------------------------------------------------------------
+
+======================= DISPERSION VERTICAL ========================
+   9 layers between constant height levels
+ Layer between two constant height levels, heights      25.00m       0.00m
+ Layer between two constant height levels, heights      75.00m      25.00m
+ Layer between two constant height levels, heights     175.00m      75.00m
+ Layer between two constant height levels, heights     375.00m     175.00m
+ Layer between two constant height levels, heights     775.00m     375.00m
+ Layer between two constant height levels, heights    1525.00m     775.00m
+ Layer between two constant height levels, heights    2725.00m    1525.00m
+ Layer between two constant height levels, heights    4725.00m    2725.00m
+ Layer between two constant height levels, heights    6725.00m    4725.00m
+----------------------------------------------------------------
+
+========================= OUTPUT VERTICAL ==========================
+   9 layers between constant height levels
+ Layer between two constant height levels, heights      25.00m       0.00m
+ Layer between two constant height levels, heights      75.00m      25.00m
+ Layer between two constant height levels, heights     175.00m      75.00m
+ Layer between two constant height levels, heights     375.00m     175.00m
+ Layer between two constant height levels, heights     775.00m     375.00m
+ Layer between two constant height levels, heights    1525.00m     775.00m
+ Layer between two constant height levels, heights    2725.00m    1525.00m
+ Layer between two constant height levels, heights    4725.00m    2725.00m
+ Layer between two constant height levels, heights    6725.00m    4725.00m
+----------------------------------------------------------------
+
+Initialising single-time fields in:meteo_market
+initialising instant field:precipitation rate [kg/m2s]
+Not realtime quantity:geopotential surface [m2/s2]
+Fields to mini_market:dispersion minimarket:          111
+3d_fields            9
+Fields to static market:dispersion minimarket:          104
+3d_fields            8
+Std pr at domain top (init_wind_diag)   42717.9687500
+Initialising single-time fields in:dispersion minimarke
+initialising instant field:Dispersion cellnorth flux corr. [kg/s]
+initialising instant field:Dispersion celltop flux corr. [kg/s]
+initialising instant field:Dispersion celleast flux corr. [kg/s]
+Cloud initialisation
+Estimated residence time is:46h  0min  0.0000sec.
+Number of cloud species:            3
+Number of source IDs:            1
+Linking Eulerian emission to dispersion grid and vertical, memusage kB       177456
+Linking the source to emission map..
+Allocate nearest-point hor structure: #:            4
+Making Eulerian emission map, memusage kB       177456
+Making a multilevel map for Emission intensity [massunits/s]
+returning INT work allocated (thread, WA No, size)         0         9  10000000
+Making Eulerian concentration map, memusage kB       177524
+Making a multilevel map for Mass in air
+Making X moment map, memusage kB       177524
+Making Y moment map, memusage kB       177524
+Making Z moment map, memusage kB       177524
+Eulerian massmaps done, memusage kB       177524
+Making dry deposition, memusage kB       177524
+Making a single-level map for Cocktail dry deposition
+Making wet deposition, memusage kB       177524
+Making a single-level map for Cocktail wet deposition
+Allocating accounting, memusage kB       177524
+Computational environment in pollution cloud is created, memusage kB       177524
+Fields to mini_market:output minimarket:           66
+3d_fields            4
+Fields to static market:output minimarket:           77
+3d_fields            5
+
+Setting horizontal and vertical cross-interpolation
+Meteo to dispersion grid interpolation
+Allocate nearest-point hor structure: #:            5
+Making new vertical interpolation structure:main_meteo_to_disp            1
+vertFrom:
+  28 layers between hybrid levels
+vertTo
+   9 layers between constant height levels
+Reprojection grid:
+   ------- Grid report of lonlat-grid--GEMS output grid                                                                
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -10.0000000       60.0000000              40          40
+   Grid_distance x and y degrees:   0.250000000      0.250000000    
+  ------------ End-of-grid-report ------------
+
+Meteo to output grid interpolation
+Allocate linear hor structure: #:            6
+Returning the interpolation structure:main_meteo_to_disp, instead of:main_meteo_to_output
+
+Pollution cloud report:
+Emission species:            3
+Material: passive, mode GAS gas phase,passive_gas
+Material: PM, mode  fixed/moving diam mode (um):    2.50  10.00   6.00 Nominal diam (um):   6.00, solubility:-999999PM_m6_0
+Material: PM, mode  fixed/moving diam mode (um):   20.00  20.00  20.00 Nominal diam (um):  20.00, solubility:-999999PM_m20
+
+Transport species:
+Material: passive, mode GAS gas phase,passive_gas
+Material: PM, mode  fixed/moving diam mode (um):    2.50  10.00   6.00 Nominal diam (um):   6.00, solubility:-999999PM_m6_0
+Material: PM, mode  fixed/moving diam mode (um):   20.00  20.00  20.00 Nominal diam (um):  20.00, solubility:-999999PM_m20
+Eulerian cloud part
+Interpolation meteo-to-dispersion horizontal: YES
+Interpolation meteo-to-dispersion vertical: YES
+
+========== TOTAL MASS REPORT ============
+Cloud time:  undefined_time      , time step:      -999999
+ Species        InAir        DryDep       WetDep     Outgoing     -Incoming-    Garbage      Total
+passive_gas     0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+PM_m6_0         0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+PM_m20          0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+ Grand total:
+                0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+---------- END OF TOTAL MASS REPORT ----------
+
+Setting emission output
+
+
+Tuning output parameters
+Considering intermediate mass map for:Emission intensity [massunits/s]
+Made intermediate mass map:Emission intensity [massunits/s]
+Considering intermediate mass map for:Concentration in air
+Made intermediate mass map:Concentration in air
+Considering intermediate mass map for:Cocktail dry deposition
+Made intermediate mass map:Cocktail dry deposition
+Considering intermediate mass map for:Cocktail wet deposition
+Made intermediate mass map:Cocktail wet deposition
+
+Initializing the meteorological output:
+2-D quantity:2m temperature [K]
+2-D quantity:U-component of 10m wind [m/s]
+2-D quantity:V-component of 10m wind [m/s]
+2-D quantity:precipitation rate [kg/m2s]
+
+Initializing dispersion output. List size =            5
+
+=========================================
+
+FINAL OUTPUT CONFIGURATION:
+
+=============================================================
+
+Output parameters:
+
+   ------- Grid report of lonlat-grid--GEMS output grid                                                                
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -10.0000000       60.0000000              40          40
+   Grid_distance x and y degrees:   0.250000000      0.250000000    
+  ------------ End-of-grid-report ------------
+
+Output levels
+   9 layers between constant height levels
+Output interval
+  1h  0min  0.0000sec.
+Output file formats:
+NETCDF
+
+Time series arrangement:
+ALL_IN_ONE
+
+Output template:output/%case
+Rules%MeteoOutLst
+
+The list of output variables is:
+2m temperature [K],2D,undefined          503
+U-component of 10m wind [m/s],2D,undefined          503
+V-component of 10m wind [m/s],2D,undefined          503
+precipitation rate [kg/m2s],2D,undefined          503
+End of output list
+---------------------------------------------------------------
+
+Rules%DispOutLst
+
+The list of output variables is:
+End of output list
+---------------------------------------------------------------
+
+Rules%MassMapOutLst
+
+The list of output variables is:
+Emission intensity [massunits/s],2D,passive_gas          503
+Emission intensity [massunits/s],2D,PM_m6_0          503
+Emission intensity [massunits/s],2D,PM_m20          503
+Concentration in air,3D,passive_gas          503
+Concentration in air,3D,PM_m6_0          503
+Concentration in air,3D,PM_m20          503
+Cocktail dry deposition,2D,passive_gas          503
+Cocktail dry deposition,2D,PM_m6_0          503
+Cocktail dry deposition,2D,PM_m20          503
+Cocktail wet deposition,2D,passive_gas          503
+Cocktail wet deposition,2D,PM_m6_0          503
+Cocktail wet deposition,2D,PM_m20          503
+End of output list
+---------------------------------------------------------------
+
+Cloud mass report every output time
+=============================================================
+ end of output parameter report
+
+
+
+
+
+============================================================
+
+Done global IO initalization
+
+============================================================
+
+MPI topology adter smpi_reset_periodic_topology:
+my_x_coord:            0
+my_y_coord:            0
+Neighbours:
+-> east:      -999999
+-> west:      -999999
+-> south:      -999999
+-> north:      -999999
+r%bTypes after update_r%bTypes:       604       604       604       604       604       605
+Acquiring meteo after init (in silam_v5)
+Meteodata_acquisition
+Storing to supermarket meteo_market multitime: ERA_I-cut/era_interim_europe_2017010100+06.ml
+Opening GRIB file i: ERA_I-cut/era_interim_europe_2017010100+06.ml
+Opened GRIB file 1: ERA_I-cut/era_interim_europe_2017010100+06.ml Memory usage (kB), time (ms)       256584       0.0947370
+open_grib_file_i timings (ms): read_stream, parse_stream, lables_xcg, stream_xcg  0.88059E-01  0.64690E-02  0.00000E+00  0.20900E-03
+Storing (IDlist, find storage, stores)  took ms       131         0         4
+Storing to supermarket meteo_market multitime: ERA_I-cut/era_interim_europe_2017010100+06.sfc
+Opening GRIB file i: ERA_I-cut/era_interim_europe_2017010100+06.sfc
+Opened GRIB file 1: ERA_I-cut/era_interim_europe_2017010100+06.sfc Memory usage (kB), time (ms)       259312       3.5486541
+open_grib_file_i timings (ms): read_stream, parse_stream, lables_xcg, stream_xcg  0.35457E+01  0.26080E-02  0.00000E+00  0.31300E-03
+Allocate linear hor structure: #:            7
+Simplified same-pole reprojection
+Switch: iOutside = setZero
+Finished averaging/sum structure
+Storing (IDlist, find storage, stores)  took ms        12         0         0
+Storing to supermarket meteo_market multitime: ice_fract SURFACE_LEVEL  0.0
+Making test field (open_input_file):ice_fract SURFACE_LEVEL  0.0
+Storing to supermarket meteo_market multitime: ERA_I-cut/era_interim_europe_2017010100+12.ml
+Opening GRIB file i: ERA_I-cut/era_interim_europe_2017010100+12.ml
+Opened GRIB file 1: ERA_I-cut/era_interim_europe_2017010100+12.ml Memory usage (kB), time (ms)       259320       0.2010540
+open_grib_file_i timings (ms): read_stream, parse_stream, lables_xcg, stream_xcg  0.19479E+00  0.61560E-02  0.00000E+00  0.10400E-03
+Storing (IDlist, find storage, stores)  took ms       138         0         4
+Storing to supermarket meteo_market multitime: ERA_I-cut/era_interim_europe_2017010100+12.sfc
+Opening GRIB file i: ERA_I-cut/era_interim_europe_2017010100+12.sfc
+Opened GRIB file 1: ERA_I-cut/era_interim_europe_2017010100+12.sfc Memory usage (kB), time (ms)       259440       5.5149579
+open_grib_file_i timings (ms): read_stream, parse_stream, lables_xcg, stream_xcg  0.55118E+01  0.27130E-02  0.00000E+00  0.41700E-03
+Storing (IDlist, find storage, stores)  took ms        14         0         0
+Storing to supermarket meteo_market multitime: ice_fract SURFACE_LEVEL  0.0
+Making test field (open_input_file):ice_fract SURFACE_LEVEL  0.0
+ *** WARNING: Field already in stack:ice_fract,undefined
+ Place of warning: put_field_to_stack
+ *** WARNING: Field already in stack:ice_fract,undefined
+ Place of warning: put_field_to_stack
+Applying wintertime for zones for 2017-01-01 06:00:0.0
+Making the following derived quantities for the following times:
+2017-01-01 06:00:0.0
+2017-01-01 12:00:0.0
+ *** WARNING: Large-scale prec required, but des not exist
+ Place of warning: make_derived_meteo_fields
+returning REAL work allocated (thread, WA No, size)         0         4  10000000
+returning REAL work allocated (thread, WA No, size)         0         5  10000000
+returning REAL work allocated (thread, WA No, size)         0         6  10000000
+Patched Richardson grid cells:   -664576102
+Patched Richardson grid cells:   -664576102
+Making Rdown from Ri and surface scheme. Method:63ABL limit:      30.0000000
+Making Rdown from Ri and surface scheme. Method:63ABL limit:      30.0000000
+ *** WARNING: Total cloud cover required but no 3d cloud cover
+ Place of warning: make_derived_meteo_fields
+make_all_diagnostic_fields sets met_buf pointers
+Allocate linear hor structure: #:            9
+main_meteo_to_disp: refining coefficients v.2: linear
+Updating single-time fields for now =2017-01-01 06:05:0.0
+Not found in stack:permanentmeteo_market  1
+Updating rain:precipitation rate [kg/m2s]
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Allocate linear hor structure: #:           10
+Allocate linear hor structure: #:           11
+2017-01-01 06:00:0.0: Diagnozing cell fluxes with opentop, aka bottom-up....
+Doing bottom-up
+Sum of vertical flux at the domain_top_kg/s  -0.8531979E+10
+Sum of abs vertical flux at the domain_top_kg/s   0.8667263E+10
+Sum of upward flux at domain_top   0.6764206E+08
+Max vertical cell flux at the domain_top_kg/s   0.5677600E+07
+Min vertical cell flux at the domain_top_kg/s  -0.1553791E+08
+Mean abs vertical mass flux at the domain_top_kg/(m2*s)       0.0000170
+Total massflux at S boundary (pole divergence)    0.6515734492800000D+11
+Total massflux at N boundary (pole divergence)   -0.3294712825600000D+11
+2017-01-01 12:00:0.0: Diagnozing cell fluxes with opentop, aka bottom-up....
+Doing bottom-up
+Sum of vertical flux at the domain_top_kg/s  -0.3816356E+10
+Sum of abs vertical flux at the domain_top_kg/s   0.4857006E+10
+Sum of upward flux at domain_top   0.5203248E+09
+Max vertical cell flux at the domain_top_kg/s   0.4047360E+07
+Min vertical cell flux at the domain_top_kg/s  -0.1583294E+08
+Mean abs vertical mass flux at the domain_top_kg/(m2*s)       0.0000095
+Total massflux at S boundary (pole divergence)    0.6609943300800000D+11
+Total massflux at N boundary (pole divergence)   -0.2971382585600000D+11
+Setting dispersion pointers...
+Done dispersion pointers...
+Updating single-time fields for now =2017-01-01 06:05:0.0
+Updating dispersion fluxes
+Diagnozing cell fluxcorrection with opentop....
+Sum of flux at domain top   0.3304876E+09
+Sum of upward flux at domain top   0.3955750E+09
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+InitEulerAdvectionFields method:advection Galperin v.5
+Allocating advecion stuff for numthreads, memusage (kB):            1       259844
+Allocating EulerStuff%Galp5 for numthreads:            1
+Allocating vertical interpolation for disp_top
+Making new vertical interpolation structure:meteo_to_disp_leveltop            2
+vertFrom:
+  28 layers between hybrid levels
+vertTo
+   9 constant height levels
+Reprojection grid:
+   ------- Grid report of lonlat-grid--GEMS output grid                                                                
+   Grid in geographical lon-lat
+   SW-corner (lon,lat), number of points x,y:   -10.0000000       60.0000000              40          40
+   Grid_distance x and y degrees:   0.250000000      0.250000000    
+  ------------ End-of-grid-report ------------
+
+Allocating advecion stuff done. numthreads, memusage (kB):            1       259844
+Initializing boundary conditions
+Setting initial conditions
+No initialization is requested
+Initial conditions set
+In run_dispersion, before loop forward
+
+========== TOTAL MASS REPORT ============
+Cloud time: 2017-01-01 06:00:0.0 , time step:  -1022596109
+ Species        InAir        DryDep       WetDep     Outgoing     -Incoming-    Garbage      Total
+passive_gas     0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+PM_m6_0         0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+PM_m20          0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+ Grand total:
+                0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00
+---------- END OF TOTAL MASS REPORT ----------
+
+Time in loop now:2017-01-01 06:00:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       259972
+Collecting the output masses
+Collecting the output meteo
+Collecting the output dispersion
+Writing the output
+Simplified same-pole reprojection
+Switch: iOutside = setMissVal
+Finished averaging/sum structure
+write_output, source:ALL_SRCS, iSource            1
+Calling open_netcdf_file_o for name:output/toypoint.nc
+Creating non-mpiio ncver:            3
+Netcdf file open for output: "output/toypoint.nc.tmp"
+Making a new time: 2017-01-01 06:00:0.0  No in file, Value            1            0
+
+Starting the new output period
+Last output time now:2017-01-01 06:00:0.0
+Writing finished
+Next output time:2017-01-01 07:00:0.0
+Applying wintertime for zones for 2017-01-01 06:00:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coefficients are up to date
+meteo_to_disp_leveltop: refining coefficients v.2: linear
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Low-concentration thresholds from emission data:
+passive:   0.3055261E-30
+PM:   0.3055261E-30
+PM:   0.3055261E-30
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+Total injected emission mass as counted from sources
+passive_gas__src 2017-01-01 06:05:0.0   0.1250000E+07
+PM_m6_0__src 2017-01-01 06:05:0.0    3000.0000000
+PM_m20__src 2017-01-01 06:05:0.0    3000.0000000
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.00000E+00  0.88464E-01  0.39862E+00
+Mean Courant:        0.0577265164090005
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.38869E-02  0.11241E-01  0.18580E-01
+
+Transformation
+Dispersion loop timers (us):         0        22      3804         0         0         1      2359         0         0         0        14         0         0         0         0         3        42         3         0         0         2       139         0         0        18         0         0         0         0      2547         1         6         0         0         0         0         0
+maxcounter val, loc         3804            3
+total_loop (us)         8970
+
+Time in loop now:2017-01-01 06:10:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265280
+Collecting the output masses
+Collecting the output meteo
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 06:10:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+Total injected emission mass as counted from sources
+passive_gas__src 2017-01-01 06:15:0.0   0.1350000E+07
+PM_m6_0__src 2017-01-01 06:15:0.0    3000.0000000
+PM_m20__src 2017-01-01 06:15:0.0    3000.0000000
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.38533E-02  0.10726E-01  0.17607E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.31001E+00  0.39547E+00  0.61179E+00
+Mean Courant:        0.2534582119528545
+
+Transformation
+Dispersion loop timers (us):         0        42       295         0         0         0       518         0         0         0         0         0         0         0         0         1         9         1         0         0         1       133         0         0        19         0         0         0         0      2768         1         5         0         0         0         0         0
+maxcounter val, loc         2768           30
+total_loop (us)         3801
+
+Time in loop now:2017-01-01 06:20:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265280
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 06:20:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+Total injected emission mass as counted from sources
+passive_gas__src 2017-01-01 06:25:0.0   0.1450000E+07
+PM_m6_0__src 2017-01-01 06:25:0.0    3000.0000000
+PM_m20__src 2017-01-01 06:25:0.0    3000.0000000
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.31041E+00  0.39742E+00  0.61788E+00
+Mean Courant:        0.2703974551624722
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.56259E-02  0.10962E-01  0.16635E-01
+
+Transformation
+Dispersion loop timers (us):         0        46       321         0         0         0       535         0         0         0         0         0         0         0         0         1        11         1         0         0         1       135         0         0        20         0         0         0         0      2737         1         4         0         0         0         0         0
+maxcounter val, loc         2737           30
+total_loop (us)         3819
+
+Time in loop now:2017-01-01 06:30:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265280
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 06:30:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+Total injected emission mass as counted from sources
+passive_gas__src 2017-01-01 06:35:0.0   0.1550000E+07
+PM_m6_0__src 2017-01-01 06:35:0.0    3000.0000000
+PM_m20__src 2017-01-01 06:35:0.0    3000.0000000
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.55444E-02  0.10441E-01  0.15663E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.30839E+00  0.39668E+00  0.62397E+00
+Mean Courant:        0.2464989589320289
+
+Transformation
+Dispersion loop timers (us):         0        96       314         0         0         0       482         0         0         0         0         0         0         0         0         1        10         1         0         0         1       177         0         0        21         0         0         0         0      2788         1         4         0         0         0         0         0
+maxcounter val, loc         2788           30
+total_loop (us)         3905
+
+Time in loop now:2017-01-01 06:40:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265280
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 06:40:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+Total injected emission mass as counted from sources
+passive_gas__src 2017-01-01 06:45:0.0   0.1650000E+07
+PM_m6_0__src 2017-01-01 06:45:0.0    3000.0000000
+PM_m20__src 2017-01-01 06:45:0.0    3000.0000000
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.30836E+00  0.39900E+00  0.63006E+00
+Mean Courant:        0.2601862434786980
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.57767E-02  0.10668E-01  0.14692E-01
+
+Transformation
+Dispersion loop timers (us):         0        41       329         0         0         0       500         0         0         0         0         0         0         0         0         2        11         1         0         0         1       158         0         0        20         0         0         0         0      2883         1         3         0         0         0         0         0
+maxcounter val, loc         2883           30
+total_loop (us)         3957
+
+Time in loop now:2017-01-01 06:50:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265280
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 06:50:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+Total injected emission mass as counted from sources
+passive_gas__src 2017-01-01 06:55:0.0   0.1750000E+07
+PM_m6_0__src 2017-01-01 06:55:0.0    3000.0000000
+PM_m20__src 2017-01-01 06:55:0.0    3000.0000000
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.56906E-02  0.10135E-01  0.13722E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.30662E+00  0.39849E+00  0.63615E+00
+Mean Courant:        0.2402554312832335
+
+Transformation
+Dispersion loop timers (us):         0        37       343         0         0         0       482         0         0         0         0         0         0         0         0         1         9         1         0         0         1       144         0         0        54         0         0         0         0      3258         4         6         0         0         0         0         0
+maxcounter val, loc         3258           30
+total_loop (us)         4348
+
+Time in loop now:2017-01-01 07:00:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265280
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Writing the output
+write_output, source:ALL_SRCS, iSource            1
+Making a new time: 2017-01-01 07:00:0.0  No in file, Value            2         3600
+
+Starting the new output period
+Last output time now:2017-01-01 07:00:0.0
+Writing finished
+
+========== TOTAL MASS REPORT ============
+Cloud time: 2017-01-01 07:00:0.0 , time step:            7
+ Species        InAir        DryDep       WetDep     Outgoing     -Incoming-    Garbage      Total
+passive_gas     0.90000E+07  0.00000E+00  0.00000E+00  0.00000E+00  0.00000E+00  0.25525E-20  0.90000E+07
+PM_m6_0         0.17978E+05  0.22170E+02  0.00000E+00  0.00000E+00  0.00000E+00  0.12034E-20  0.18000E+05
+PM_m20          0.17913E+05  0.87275E+02  0.00000E+00  0.00000E+00  0.00000E+00  0.19822E-19  0.18000E+05
+ Grand total:
+                0.90359E+07  0.10945E+03  0.00000E+00  0.00000E+00  0.00000E+00  0.23578E-19  0.90360E+07
+---------- END OF TOTAL MASS REPORT ----------
+
+========== OUTGOING MASS REPORT ============
+ Species            x<1         x>xMax      y<1         y>yMax      z<1         z>zMax
+passive_gas    0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+PM_m6_0        0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+PM_m20         0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+---------- END OF OUTGOING MASS REPORT ----------
+
+
+========== INCOMING MASS REPORT ============
+ Species            x<1         x>xMax      y<1         y>yMax      z<1         z>zMax
+passive_gas    0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+PM_m6_0        0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+PM_m20         0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+---------- END OF INCOMING MASS REPORT ----------
+
+Next output time:2017-01-01 08:00:0.0
+Applying wintertime for zones for 2017-01-01 07:00:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: refining coefficients v.2: linear
+meteo_to_disp_leveltop: refining coefficients v.2: linear
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.30804E+00  0.40193E+00  0.64225E+00
+Mean Courant:        0.2521396552191840
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.64729E-02  0.13040E-01  0.17447E-01
+
+Transformation
+Dispersion loop timers (us):         0        48      1817         0         0         0      4784         0         0         0         1         0         0         0         0         2        18         2         0         0         1       172         0         0        14         0         0         0         0      3302         1         4         0         0         0         0         0
+maxcounter val, loc         4784            7
+total_loop (us)        10175
+
+Time in loop now:2017-01-01 07:10:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 07:10:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.63635E-02  0.12766E-01  0.17052E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.30644E+00  0.40154E+00  0.64834E+00
+Mean Courant:        0.2364567870018529
+
+Transformation
+Dispersion loop timers (us):         0        48       303         0         0         0       476         0         0         0         0         0         0         0         0         1        10         1         0         0         1       130         0         0         6         0         0         0         0      3316         1         4         0         0         0         0         0
+maxcounter val, loc         3316           30
+total_loop (us)         4306
+
+Time in loop now:2017-01-01 07:20:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 07:20:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.30941E+00  0.40699E+00  0.65444E+00
+Mean Courant:        0.2495402648787717
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.81011E-02  0.15209E-01  0.20340E-01
+
+Transformation
+Dispersion loop timers (us):         0        35       296         0         0         0       525         0         0         0         0         0         0         0         0         1        10         1         0         0         1       133         0         0         9         0         0         0         0      6049         1         4         0         0         0         0         0
+maxcounter val, loc         6049           30
+total_loop (us)         7074
+
+Time in loop now:2017-01-01 07:30:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 07:30:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.79081E-02  0.14801E-01  0.19707E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.30792E+00  0.40648E+00  0.66054E+00
+Mean Courant:        0.2377636141636133
+
+Transformation
+Dispersion loop timers (us):         0        48       299         0         0         0       565         0         0         0         0         0         0         0         0         1        10         1         0         0         1       131         0         0         7         0         0         0         0      3778         1         4         0         0         0         0         0
+maxcounter val, loc         3778           30
+total_loop (us)         4854
+
+Time in loop now:2017-01-01 07:40:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 07:40:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.31221E+00  0.41254E+00  0.66665E+00
+Mean Courant:        0.2475247699633048
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.78046E-02  0.14810E-01  0.19710E-01
+
+Transformation
+Dispersion loop timers (us):         0        43       316         0         0         1       468         0         0         0         0         0         0         0         0         1        10         1         0         0         1       130         0         0         6         0         0         0         0      4038         1         3         0         0         0         0         0
+maxcounter val, loc         4038           30
+total_loop (us)         5027
+
+Time in loop now:2017-01-01 07:50:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 07:50:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.76085E-02  0.14380E-01  0.19083E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.31053E+00  0.41216E+00  0.67275E+00
+Mean Courant:        0.2375872137769738
+
+Transformation
+Dispersion loop timers (us):         0        30       335         0         0         0       432         0         0         0         0         0         0         0         0         1         8         1         0         0         1       128         0         0         6         0         0         0         0      4464         2         5         0         0         0         0         0
+maxcounter val, loc         4464           30
+total_loop (us)         5421
+
+Time in loop now:2017-01-01 08:00:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Writing the output
+write_output, source:ALL_SRCS, iSource            1
+Making a new time: 2017-01-01 08:00:0.0  No in file, Value            3         7200
+
+Starting the new output period
+Last output time now:2017-01-01 08:00:0.0
+Writing finished
+
+========== TOTAL MASS REPORT ============
+Cloud time: 2017-01-01 08:00:0.0 , time step:           13
+ Species        InAir        DryDep       WetDep     Outgoing     -Incoming-    Garbage      Total
+passive_gas     0.90000E+07  0.00000E+00  0.00000E+00  0.65876E-19  0.00000E+00  0.65953E-18  0.90000E+07
+PM_m6_0         0.17811E+05  0.18888E+03  0.00000E+00  0.33581E-22  0.00000E+00  0.67996E-18  0.18000E+05
+PM_m20          0.17328E+05  0.67204E+03  0.00000E+00  0.00000E+00  0.00000E+00  0.72540E-18  0.18000E+05
+ Grand total:
+                0.90351E+07  0.86092E+03  0.00000E+00  0.65909E-19  0.00000E+00  0.20649E-17  0.90360E+07
+---------- END OF TOTAL MASS REPORT ----------
+
+========== OUTGOING MASS REPORT ============
+ Species            x<1         x>xMax      y<1         y>yMax      z<1         z>zMax
+passive_gas    0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.65876E-19
+PM_m6_0        0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.33581E-22
+PM_m20         0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+---------- END OF OUTGOING MASS REPORT ----------
+
+
+========== INCOMING MASS REPORT ============
+ Species            x<1         x>xMax      y<1         y>yMax      z<1         z>zMax
+passive_gas    0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+PM_m6_0        0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+PM_m20         0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+---------- END OF INCOMING MASS REPORT ----------
+
+Next output time:2017-01-01 09:00:0.0
+Applying wintertime for zones for 2017-01-01 08:00:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: refining coefficients v.2: linear
+meteo_to_disp_leveltop: refining coefficients v.2: linear
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.31594E+00  0.41822E+00  0.67886E+00
+Mean Courant:        0.2445492712616496
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.86418E-02  0.15362E-01  0.20377E-01
+
+Transformation
+Dispersion loop timers (us):         0        44      1795         0         0         0      4186         0         0         0         1         0         0         0         0         2        17         1         0         0         1       136         0         0        11         0         0         0         0      4788         1         4         0         0         0         0         0
+maxcounter val, loc         4788           30
+total_loop (us)        10996
+
+Time in loop now:2017-01-01 08:10:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 08:10:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.84185E-02  0.14873E-01  0.19670E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.31448E+00  0.41782E+00  0.68497E+00
+Mean Courant:        0.2353748336800123
+
+Transformation
+Dispersion loop timers (us):         0        50       317         0         0         0       572         0         0         0         0         0         0         0         0         2        13         2         0         0         1       208         0         0        13         0         0         0         0      5326         3         5         0         0         0         0         0
+maxcounter val, loc         5326           30
+total_loop (us)         6523
+
+Time in loop now:2017-01-01 08:20:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 08:20:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.32053E+00  0.42429E+00  0.69108E+00
+Mean Courant:        0.2412324673316313
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.84903E-02  0.15300E-01  0.20506E-01
+
+Transformation
+Dispersion loop timers (us):         0        58       308         0         0         0       559         0         0         0         0         0         0         0         0         1        11         1         0         0         1       131         0         0         7         0         0         0         0      5268         1         5         0         0         0         0         0
+maxcounter val, loc         5268           30
+total_loop (us)         6360
+
+Time in loop now:2017-01-01 08:30:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 08:30:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.82679E-02  0.14795E-01  0.19792E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.31928E+00  0.42502E+00  0.69719E+00
+Mean Courant:        0.2327490556347096
+
+Transformation
+Dispersion loop timers (us):         0        46       299         0         0         0       523         0         0         0         0         0         0         0         0         1        11         1         0         0         1       131         0         0         7         0         0         0         0      5233         2         4         0         0         0         0         0
+maxcounter val, loc         5233           30
+total_loop (us)         6266
+
+Time in loop now:2017-01-01 08:40:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 08:40:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.32202E+00  0.42861E+00  0.70330E+00
+Mean Courant:        0.2363940645295732
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.90785E-02  0.14981E-01  0.19078E-01
+
+Transformation
+Dispersion loop timers (us):         0        37       359         0         0         0       463         0         0         0         0         0         0         0         0         1        10         1         0         0         1       252         0         0         8         0         0         0         0      5878         1         4         0         0         0         0         0
+maxcounter val, loc         5878           30
+total_loop (us)         7022
+
+Time in loop now:2017-01-01 08:50:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 08:50:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.89247E-02  0.14552E-01  0.18364E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.32086E+00  0.42949E+00  0.70942E+00
+Mean Courant:        0.2286570682163256
+
+Transformation
+Dispersion loop timers (us):         0        44       302         0         0         0       562         0         0         0         0         0         0         0         0         1        11         1         0         0         1       177         0         0        10         0         0         0         0      6175         2         5         0         0         0         0         0
+maxcounter val, loc         6175           30
+total_loop (us)         7300
+
+Time in loop now:2017-01-01 09:00:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Writing the output
+write_output, source:ALL_SRCS, iSource            1
+Making a new time: 2017-01-01 09:00:0.0  No in file, Value            4        10800
+
+Starting the new output period
+Last output time now:2017-01-01 09:00:0.0
+Writing finished
+
+========== TOTAL MASS REPORT ============
+Cloud time: 2017-01-01 09:00:0.0 , time step:           19
+ Species        InAir        DryDep       WetDep     Outgoing     -Incoming-    Garbage      Total
+passive_gas     0.90000E+07  0.00000E+00  0.00000E+00  0.66002E-19  0.00000E+00  0.36120E-17  0.90000E+07
+PM_m6_0         0.17497E+05  0.50346E+03  0.00000E+00  0.33581E-22  0.00000E+00  0.40835E-17  0.18000E+05
+PM_m20          0.16361E+05  0.16386E+04  0.00000E+00  0.00000E+00  0.00000E+00  0.40698E-17  0.18000E+05
+ Grand total:
+                0.90339E+07  0.21421E+04  0.00000E+00  0.66035E-19  0.00000E+00  0.11765E-16  0.90360E+07
+---------- END OF TOTAL MASS REPORT ----------
+
+========== OUTGOING MASS REPORT ============
+ Species            x<1         x>xMax      y<1         y>yMax      z<1         z>zMax
+passive_gas    0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.66002E-19
+PM_m6_0        0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.33581E-22
+PM_m20         0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+---------- END OF OUTGOING MASS REPORT ----------
+
+
+========== INCOMING MASS REPORT ============
+ Species            x<1         x>xMax      y<1         y>yMax      z<1         z>zMax
+passive_gas    0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+PM_m6_0        0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+PM_m20         0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+---------- END OF INCOMING MASS REPORT ----------
+
+Next output time:2017-01-01 10:00:0.0
+Applying wintertime for zones for 2017-01-01 09:00:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: refining coefficients v.2: linear
+meteo_to_disp_leveltop: refining coefficients v.2: linear
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.31970E+00  0.43285E+00  0.71554E+00
+Mean Courant:        0.2317088536197582
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.88375E-02  0.14457E-01  0.18081E-01
+
+Transformation
+Dispersion loop timers (us):         0        62      1839         0         0         0      4127         0         0         0         0         0         0         0         0         2        15         1         0         0         1       152         0         0        11         0         0         0         0      6025         1         5         0         0         0         0         0
+maxcounter val, loc         6025           30
+total_loop (us)        12250
+
+Time in loop now:2017-01-01 09:10:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 09:10:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.86858E-02  0.14104E-01  0.17716E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.32279E+00  0.43427E+00  0.72166E+00
+Mean Courant:        0.2253606553023261
+
+Transformation
+Dispersion loop timers (us):         0        49       360         0         0         0       496         0         0         0         0         0         0         0         0         1        12         1         0         0         1       134         0         0         7         0         0         0         0      6976         2         5         0         0         0         0         0
+maxcounter val, loc         6976           30
+total_loop (us)         8053
+
+Time in loop now:2017-01-01 09:20:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 09:20:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.32454E+00  0.43736E+00  0.72778E+00
+Mean Courant:        0.2272490706553962
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.85342E-02  0.14105E-01  0.17772E-01
+
+Transformation
+Dispersion loop timers (us):         0        46       318         0         0         0       535         0         0         0         0         0         0         0         0         1        11         1         0         0         1       131         0         0         8         0         0         0         0      6568         1         4         0         0         0         0         0
+maxcounter val, loc         6568           30
+total_loop (us)         7634
+
+Time in loop now:2017-01-01 09:30:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 09:30:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.83827E-02  0.13706E-01  0.17085E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.32907E+00  0.43926E+00  0.73391E+00
+Mean Courant:        0.2273901916217554
+
+Transformation
+Dispersion loop timers (us):         0        43       347         0         0         0       551         0         0         0         0         0         0         0         0         1        11         1         0         0         1       148         0         0         8         0         0         0         0      6667         2         4         0         0         0         0         0
+maxcounter val, loc         6667           30
+total_loop (us)         7794
+
+Time in loop now:2017-01-01 09:40:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 09:40:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.33361E+00  0.44282E+00  0.74003E+00
+Mean Courant:        0.2301806389451158
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.83420E-02  0.13634E-01  0.16933E-01
+
+Transformation
+Dispersion loop timers (us):         0        45       302         0         0         0       535         0         0         0         0         0         0         0         0         1        11         1         0         0         1       132         0         0         8         0         0         0         0      6738         1         4         0         0         0         0         0
+maxcounter val, loc         6738           30
+total_loop (us)         7788
+
+Time in loop now:2017-01-01 09:50:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 09:50:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.81119E-02  0.13286E-01  0.16364E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.33815E+00  0.44621E+00  0.74616E+00
+Mean Courant:        0.2318176957996877
+
+Transformation
+Dispersion loop timers (us):         0        45       339         0         0         0       474         0         0         0         0         0         0         0         0         1        10         1         0         0         1       146         0         0         7         0         0         0         0      6703         2         4         0         0         0         0         0
+maxcounter val, loc         6703           30
+total_loop (us)         7742
+
+Time in loop now:2017-01-01 10:00:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Writing the output
+write_output, source:ALL_SRCS, iSource            1
+Making a new time: 2017-01-01 10:00:0.0  No in file, Value            5        14400
+
+Starting the new output period
+Last output time now:2017-01-01 10:00:0.0
+Writing finished
+
+========== TOTAL MASS REPORT ============
+Cloud time: 2017-01-01 10:00:0.0 , time step:           25
+ Species        InAir        DryDep       WetDep     Outgoing     -Incoming-    Garbage      Total
+passive_gas     0.90000E+07  0.00000E+00  0.00000E+00  0.20619E-12  0.00000E+00  0.87825E-17  0.90000E+07
+PM_m6_0         0.17107E+05  0.89291E+03  0.00000E+00  0.47624E-15  0.00000E+00  0.94782E-17  0.18000E+05
+PM_m20          0.15277E+05  0.27227E+04  0.00000E+00  0.43212E-15  0.00000E+00  0.94493E-17  0.18000E+05
+ Grand total:
+                0.90324E+07  0.36157E+04  0.00000E+00  0.20709E-12  0.00000E+00  0.27710E-16  0.90360E+07
+---------- END OF TOTAL MASS REPORT ----------
+
+========== OUTGOING MASS REPORT ============
+ Species            x<1         x>xMax      y<1         y>yMax      z<1         z>zMax
+passive_gas    0.00000E+00 0.76213E-19 0.20619E-12 0.00000E+00 0.00000E+00 0.66002E-19
+PM_m6_0        0.00000E+00 0.00000E+00 0.47624E-15 0.00000E+00 0.00000E+00 0.33581E-22
+PM_m20         0.00000E+00 0.00000E+00 0.43212E-15 0.00000E+00 0.00000E+00 0.00000E+00
+---------- END OF OUTGOING MASS REPORT ----------
+
+
+========== INCOMING MASS REPORT ============
+ Species            x<1         x>xMax      y<1         y>yMax      z<1         z>zMax
+passive_gas    0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+PM_m6_0        0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+PM_m20         0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+---------- END OF INCOMING MASS REPORT ----------
+
+Next output time:2017-01-01 11:00:0.0
+Applying wintertime for zones for 2017-01-01 10:00:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: refining coefficients v.2: linear
+meteo_to_disp_leveltop: refining coefficients v.2: linear
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.34268E+00  0.45049E+00  0.75229E+00
+Mean Courant:        0.2339982279147546
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.79284E-02  0.13047E-01  0.15896E-01
+
+Transformation
+Dispersion loop timers (us):         0        45      1791         0         0         1      4622         0         0         0         1         0         0         0         0         1        16         1         0         0         1       138         0         0        11         0         0         0         0      6942         1         5         0         0         0         0         0
+maxcounter val, loc         6942           30
+total_loop (us)        13584
+
+Time in loop now:2017-01-01 10:10:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 10:10:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.77771E-02  0.12858E-01  0.15894E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.34722E+00  0.45467E+00  0.75842E+00
+Mean Courant:        0.2349912869557484
+
+Transformation
+Dispersion loop timers (us):         0        47       308         0         0         0       504         0         0         0         0         0         0         0         0         1        11         1         0         0         1       148         0         0         8         0         0         0         0      6763         1         4         0         0         0         0         0
+maxcounter val, loc         6763           30
+total_loop (us)         7805
+
+Time in loop now:2017-01-01 10:20:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 10:20:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.35176E+00  0.45917E+00  0.76456E+00
+Mean Courant:        0.2365132980166434
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.76410E-02  0.12809E-01  0.16439E-01
+
+Transformation
+Dispersion loop timers (us):         0        42       298         0         0         0       533         0         0         0         1         0         0         0         0         1        12         1         0         0         1       194         0         0        10         0         0         0         0      6786         1         5         0         0         0         0         0
+maxcounter val, loc         6786           30
+total_loop (us)         7895
+
+Time in loop now:2017-01-01 10:30:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 10:30:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.75297E-02  0.12746E-01  0.16619E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.35629E+00  0.46442E+00  0.77070E+00
+Mean Courant:        0.2376396275463191
+
+Transformation
+Dispersion loop timers (us):         0        46       302         0         0         0       687         0         0         0         0         0         0         0         0         2        12         1         0         0         1       138         0         0         9         0         0         0         0      7048         3         5         0         0         0         0         0
+maxcounter val, loc         7048           30
+total_loop (us)         8262
+
+Time in loop now:2017-01-01 10:40:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 10:40:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.36083E+00  0.46970E+00  0.77683E+00
+Mean Courant:        0.2392240838276919
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.74184E-02  0.12690E-01  0.16799E-01
+
+Transformation
+Dispersion loop timers (us):         0        48       300         0         0         0       498         0         0         0         0         0         0         0         0         2        10         1         0         0         1       136         0         0        11         0         0         0         0      7405         1         5         0         0         0         0         0
+maxcounter val, loc         7405           30
+total_loop (us)         8426
+
+Time in loop now:2017-01-01 10:50:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 10:50:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.73072E-02  0.12660E-01  0.16979E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.36537E+00  0.47498E+00  0.78297E+00
+Mean Courant:        0.2405777084811673
+
+Transformation
+Dispersion loop timers (us):         0        51       332         0         0         0       519         0         0         0         0         0         0         0         0         1        12         2         0         0         1       139         0         0         7         0         0         0         0      7364         3         5         0         0         0         0         0
+maxcounter val, loc         7364           30
+total_loop (us)         8446
+
+Time in loop now:2017-01-01 11:00:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Writing the output
+write_output, source:ALL_SRCS, iSource            1
+Making a new time: 2017-01-01 11:00:0.0  No in file, Value            6        18000
+
+Starting the new output period
+Last output time now:2017-01-01 11:00:0.0
+Writing finished
+
+========== TOTAL MASS REPORT ============
+Cloud time: 2017-01-01 11:00:0.0 , time step:           31
+ Species        InAir        DryDep       WetDep     Outgoing     -Incoming-    Garbage      Total
+passive_gas     0.90000E+07  0.00000E+00  0.00000E+00  0.62109E-09  0.00000E+00  0.13117E-16  0.90000E+07
+PM_m6_0         0.16679E+05  0.13206E+04  0.00000E+00  0.14098E-11  0.00000E+00  0.15235E-16  0.18000E+05
+PM_m20          0.14186E+05  0.38137E+04  0.00000E+00  0.12380E-11  0.00000E+00  0.15245E-16  0.18000E+05
+ Grand total:
+                0.90309E+07  0.51343E+04  0.00000E+00  0.62374E-09  0.00000E+00  0.43597E-16  0.90360E+07
+---------- END OF TOTAL MASS REPORT ----------
+
+========== OUTGOING MASS REPORT ============
+ Species            x<1         x>xMax      y<1         y>yMax      z<1         z>zMax
+passive_gas    0.00000E+00 0.15490E-14 0.62109E-09 0.00000E+00 0.00000E+00 0.66002E-19
+PM_m6_0        0.00000E+00 0.33937E-17 0.14098E-11 0.00000E+00 0.00000E+00 0.33581E-22
+PM_m20         0.00000E+00 0.16039E-17 0.12380E-11 0.00000E+00 0.00000E+00 0.00000E+00
+---------- END OF OUTGOING MASS REPORT ----------
+
+
+========== INCOMING MASS REPORT ============
+ Species            x<1         x>xMax      y<1         y>yMax      z<1         z>zMax
+passive_gas    0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+PM_m6_0        0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+PM_m20         0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+---------- END OF INCOMING MASS REPORT ----------
+
+Next output time:2017-01-01 12:00:0.0
+Applying wintertime for zones for 2017-01-01 11:00:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: refining coefficients v.2: linear
+meteo_to_disp_leveltop: refining coefficients v.2: linear
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.36991E+00  0.48027E+00  0.78912E+00
+Mean Courant:        0.2423964962623490
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.71960E-02  0.12659E-01  0.17160E-01
+
+Transformation
+Dispersion loop timers (us):         0        44      1970         0         0         0      4106         0         0         0         1         0         0         0         0         1        16         1         0         0         1       152         0         0        11         0         0         0         0      7285         1         5         0         0         0         0         0
+maxcounter val, loc         7285           30
+total_loop (us)        13603
+
+Time in loop now:2017-01-01 11:10:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 11:10:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.70848E-02  0.12708E-01  0.17340E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.37445E+00  0.48556E+00  0.79526E+00
+Mean Courant:        0.2437080429353669
+
+Transformation
+Dispersion loop timers (us):         0        47       304         0         0         1       527         0         0         0         0         0         0         0         0         1        10         1         0         0         1       132         0         0         7         0         0         0         0      7097         3         5         0         0         0         0         0
+maxcounter val, loc         7097           30
+total_loop (us)         8144
+
+Time in loop now:2017-01-01 11:20:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 11:20:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.37899E+00  0.49085E+00  0.80141E+00
+Mean Courant:        0.2449519186208148
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.71242E-02  0.12996E-01  0.17521E-01
+
+Transformation
+Dispersion loop timers (us):         0        38       295         0         0         0       510         0         0         0         0         0         0         0         0         1         9         1         0         0         1       129         0         0         7         0         0         0         0      7162         1         5         0         0         0         0         0
+maxcounter val, loc         7162           30
+total_loop (us)         8165
+
+Time in loop now:2017-01-01 11:30:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 11:30:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.73290E-02  0.13450E-01  0.17701E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.38353E+00  0.49614E+00  0.80756E+00
+Mean Courant:        0.2463003534060123
+
+Transformation
+Dispersion loop timers (us):         0        40       306         0         0         0       580         0         0         0         0         0         0         0         0         2        12         1         0         0         1       132         0         0         7         0         0         0         0      8305         4         9         0         0         0         0         0
+maxcounter val, loc         8305           30
+total_loop (us)         9407
+
+Time in loop now:2017-01-01 11:40:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 11:40:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.38807E+00  0.50143E+00  0.81371E+00
+Mean Courant:        0.2479648188424821
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.78171E-02  0.13965E-01  0.17882E-01
+
+Transformation
+Dispersion loop timers (us):         0        80       529         0         0         0       734         0         0         0         0         0         0         0         0         3        13         2         0         0         2       214         0         0        13         0         0         0         0      7246         1         4         0         0         0         0         0
+maxcounter val, loc         7246           30
+total_loop (us)         8849
+
+Time in loop now:2017-01-01 11:50:0.0, run to:2017-01-01 12:00:0.0
+LoopStart memusage, kB       265344
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Applying wintertime for zones for 2017-01-01 11:50:0.0
+Skipping derived quatities: nothing to do
+make_derived_meteo_fields: No new meteodata
+make_all_diagnostic_fields sets met_buf pointers
+main_meteo_to_disp: interpolation structure coeffs are almost up to date
+meteo_to_disp_leveltop: interpolation structure coeffs are almost up to date
+Diagnosing dynamic dispersion vertical cell size..
+Diagnozing cells mass fluxes from meteo for:dispersion minimarke
+NO rotation for massfluxes
+Setting dispersion pointers...
+Done dispersion pointers...
+ *** WARNING: undefined dynamic list
+ Place of warning: make_diagnostic_fields
+Diagnosing dynamic dispersion vertical cell size..
+Computing now-time emission (dispersion supplementary)
+Emission to transport in parallel. nthreads=1
+
+adv_diffusion_vertical_v5
+Max Courant for levels on vert (min, mean, max):  0.80258E-02  0.14436E-01  0.18153E-01
+
+adv_euler_Galp_xy_v5,Triangle, CMrelax:       1.0000000
+Max Courant for levels (min, mean, max):  0.39261E+00  0.50672E+00  0.81986E+00
+Mean Courant:        0.2493373839536182
+
+Transformation
+Dispersion loop timers (us):         0        46       300         0         0         0       496         0         0         0         0         0         0         0         0         1        10         1         0         0         1       131         0         0         7         0         0         0         0      7155         2         5         0         0         0         0         0
+maxcounter val, loc         7155           30
+total_loop (us)         8162
+In run_dispersion, after loop forward
+
+========== TOTAL MASS REPORT ============
+Cloud time: 2017-01-01 12:00:0.0 , time step:           37
+ Species        InAir        DryDep       WetDep     Outgoing     -Incoming-    Garbage      Total
+passive_gas     0.90000E+07  0.00000E+00  0.00000E+00  0.16438E-06  0.00000E+00  0.16366E-16  0.90000E+07
+PM_m6_0         0.16250E+05  0.17500E+04  0.00000E+00  0.36860E-09  0.00000E+00  0.19666E-16  0.18000E+05
+PM_m20          0.13161E+05  0.48389E+04  0.00000E+00  0.30698E-09  0.00000E+00  0.19953E-16  0.18000E+05
+ Grand total:
+                0.90294E+07  0.65889E+04  0.00000E+00  0.16506E-06  0.00000E+00  0.55986E-16  0.90360E+07
+---------- END OF TOTAL MASS REPORT ----------
+
+========== OUTGOING MASS REPORT ============
+ Species            x<1         x>xMax      y<1         y>yMax      z<1         z>zMax
+passive_gas    0.00000E+00 0.34584E-11 0.16438E-06 0.00000E+00 0.00000E+00 0.66002E-19
+PM_m6_0        0.00000E+00 0.71848E-14 0.36859E-09 0.00000E+00 0.00000E+00 0.33581E-22
+PM_m20         0.00000E+00 0.37180E-14 0.30697E-09 0.00000E+00 0.00000E+00 0.00000E+00
+---------- END OF OUTGOING MASS REPORT ----------
+
+
+========== INCOMING MASS REPORT ============
+ Species            x<1         x>xMax      y<1         y>yMax      z<1         z>zMax
+passive_gas    0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+PM_m6_0        0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+PM_m20         0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+---------- END OF INCOMING MASS REPORT ----------
+
+Finalising files after time loop
+Final output after-step
+Collecting the output masses
+Collecting the output meteo
+Can't add anything new for:prec_rate
+Collecting the output dispersion
+Writing the output
+write_output, source:ALL_SRCS, iSource            1
+Making a new time: 2017-01-01 12:00:0.0  No in file, Value            7        21600
+
+Starting the new output period
+Last output time now:2017-01-01 12:00:0.0
+Writing finished
+Closing NETCDF output file
+Closing nc file            1
+
+========== OUTGOING MASS REPORT ============
+ Species            x<1         x>xMax      y<1         y>yMax      z<1         z>zMax
+passive_gas    0.00000E+00 0.34584E-11 0.16438E-06 0.00000E+00 0.00000E+00 0.66002E-19
+PM_m6_0        0.00000E+00 0.71848E-14 0.36859E-09 0.00000E+00 0.00000E+00 0.33581E-22
+PM_m20         0.00000E+00 0.37180E-14 0.30697E-09 0.00000E+00 0.00000E+00 0.00000E+00
+---------- END OF OUTGOING MASS REPORT ----------
+
+
+========== INCOMING MASS REPORT ============
+ Species            x<1         x>xMax      y<1         y>yMax      z<1         z>zMax
+passive_gas    0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+PM_m6_0        0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+PM_m20         0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00 0.00000E+00
+---------- END OF INCOMING MASS REPORT ----------
+
+At the end of the run memory usage (kB)       265344
+======>>>>  Time counter:Overall_run_time
+ 2.6530sec.
+======>>>>  Time counter:Overall_initialisation
+ 2.3770sec.
+======>>>>  Time counter:count_sources
+ 0.0010sec.
+======>>>>  Time counter:read_sources
+ 0.0000sec.
+======>>>>  Time counter:Meteo_initialisation
+ 0.2540sec.
+======>>>>  Time counter:arrange_supermarket
+ 0.0030sec.
+======>>>>  Time counter:Cloud initialisation
+ 0.0010sec.
+======>>>>  Time counter:Meteodata_acquisition
+ 0.3350sec.
+======>>>>  Time counter:Meteodata_processing
+ 0.0460sec.
+======>>>>  Time counter:make_derived_meteo_fields
+ 0.0060sec.
+======>>>>  Time counter:Refine vertical coefs v2
+ 0.0210sec.
+======>>>>  Time counter:Dispersion loop
+ 0.2740sec.
+======>>>>  Time counter:Output
+ 0.0290sec.
+======>>>>  Time counter:Collect_intermediate_mass_maps
+ 0.0150sec.
+======>>>>  Time counter:collect_met_field_data
+ 0.0000sec.
+======>>>>  Time counter:Collect_other_dispersion_fields
+ 0.0000sec.
+======>>>>  Time counter:write_output
+ 0.0100sec.
+======>>>>  Time counter:Transformation
+ 0.0010sec.
+======>>>>  Time counter:now_time_emission
+ 0.0080sec.
+======>>>>  Time counter:Advection
+ 0.2000sec.
+======>>>>  Time counter:Horizontal transport
+ 0.1020sec.
+======>>>>  Time counter:Vertical transport
+ 0.0940sec.
+Local time now: 2026-10-25_17:47:59+0800
+UTC time now: 2026-10-25 09:47:59.6

@@ -70,7 +70,7 @@ config:
 	@echo Config OK.
 
 tags: $(SOURCES)
-	$(MAKE) -C $(SRCDIR) tags
+	$(MAKE) -C $(SILAM_ROOT) tags
 
 lib : expand config
 	$(MAKE) -f $(BUILDDIR)/makefile.lib
@@ -100,13 +100,11 @@ up : expand
 DISTRO = $(DISTRDIR)/$(PROGRAM)
 distr : expand revision config
 	mkdir -p $(DISTRO)/src $(DISTRO)/tests $(DISTRO)/bin $(DISTRO)/build $(DISTRO)/obj
-	cp -v makefile makefile.* config.pl library.objects Makefile.branch options.*[!~] $(DISTRO)/build
+	cp -v makefile makefile.* config.pl library.objects Makefile.branch $(wildcard DefaultSetup) options.*[!~] $(DISTRO)/build
 	touch $(DISTRO)/build/check_revision
-	cp -vp ../src/Makefile ../src/.gitignore $(DISTRO)/src
-	cp -vp ../tests/README.md $(DISTRO)/tests
 	cd $(SILAM_ROOT) && find src tests -type f -name '*.f90' -exec cp --parents -vp -t $(abspath $(DISTRO)) {} +
-	cp -vrp ../ini ../doc $(DISTRO)
-	cp ../README.md ../LICENSE ../AGENTS.md $(DISTRO)
+	cp -vrp ../ini ../docs $(DISTRO)
+	cp ../Makefile ../README.md ../LICENSE ../AGENTS.md ../.gitignore $(DISTRO)
 	cd $(DISTRDIR) && tar cvf $(PROGRAM).tar $(PROGRAM)
 	gzip -f $(DISTRDIR)/$(PROGRAM).tar
 

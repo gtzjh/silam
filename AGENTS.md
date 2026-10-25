@@ -8,7 +8,15 @@ instructions when they differ from these rules.
 - Use Simplified Chinese for user-facing explanations unless another language
   is requested. Give the result first. Keep terms and sentences clear.
 - This file defines execution rules. `README.md` gives project, build, and run
-  entry points. `doc/dev/` contains the detailed development guides.
+  entry points. `docs/dev/` contains the detailed development guides.
+- Maintain only the root `README.md`. Put directory overviews and usage
+  instructions in its relevant sections; do not create README files in
+  subdirectories, including alternate names such as `00README`. Keep detailed
+  topic guides in `docs/dev/` and link to them from the root README.
+- Maintain ignore rules only in the root `.gitignore`; do not create
+  subdirectory `.gitignore` files. Scope directory-specific rules with paths
+  relative to the project root. Preserve recursive matching and exceptions
+  when moving or changing rules.
 - Keep long-term technical conclusions in the relevant development guide.
   Do not create task logs or MEMORY files. Do not require log IDs or commit
   trailers. Use Git history to trace changes.
@@ -89,7 +97,7 @@ instructions when they differ from these rules.
   system. Put model sources in the functional subdirectories under `src/`
   and test implementations in matching functional folders under `tests/`.
   Read the relevant guides in
-  `doc/dev/` before changing them.
+  `docs/dev/` before changing them.
 - Do not define custom classes or return their instances from functions.
 - Treat parameter values supplied directly by the user as valid. Do not add
   validation for them. When changing the affected code, remove that validation

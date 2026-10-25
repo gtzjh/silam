@@ -1,6 +1,6 @@
 #################################################################
 #
-# Makefile for for silam version 4.2
+# Internal build control for SILAM. Use the project-root Makefile.
 #
 # author: J. Vira / FMI
 #
@@ -81,7 +81,7 @@ config:
 
 
 tags: $(SOURCES)
-	$(MAKE) -C $(SRCDIR) tags
+	$(MAKE) -C $(SILAM_ROOT) tags
 
 lib : expand config
 	$(MAKE) -f $(BUILDDIR)/makefile.lib
@@ -117,18 +117,10 @@ DISTRO = $(DISTRDIR)/$(PROGRAM)
 distr : config
 	rm -rf  $(DISTRO)
 	mkdir -p $(DISTRO)/src $(DISTRO)/tests $(DISTRO)/bin $(DISTRO)/build $(DISTRO)/obj $(DISTRO)/ini
-	cp -vp makefile makefile.* config.pl library.objects Makefile.branch options.*[!~] $(DISTRO)/build
+	cp -vp makefile makefile.* config.pl library.objects Makefile.branch $(wildcard DefaultSetup) options.*[!~] $(DISTRO)/build
 	touch $(DISTRO)/build/check_revision
-	cp -vp ../src/Makefile ../src/DefaultSetup ../src/.gitignore $(DISTRO)/src
-	cp -vp ../tests/README.md $(DISTRO)/tests
 	cd $(SILAM_ROOT) && find src tests -type f -name '*.f90' -exec cp --parents -vp -t $(abspath $(DISTRO)) {} +
 	cp -vrp ../ini/*  $(DISTRO)/ini
-	cp -vrp ../doc $(DISTRO)
-	cp ../README.md ../LICENSE ../AGENTS.md $(DISTRO)
+	cp -vrp ../docs $(DISTRO)
+	cp ../Makefile ../README.md ../LICENSE ../AGENTS.md ../.gitignore $(DISTRO)
 	cd $(DISTRDIR) && tar cvjf $(PROGRAM).tar.bz2 $(PROGRAM)
-
-
-# Make documentation. So far just the data assimilation "readme" document.
-docs : 
-	cd ../doc && $(MAKE)
-

@@ -208,9 +208,11 @@ contains
 """ % pardict)
 
 
-        svncmd=diffcmd + ' .'
-        for dir in [os.path.join(directory,'..','build'), directory,
-                    os.path.join(directory,'..','tests')]:
+        for dir, path in [(os.path.join(directory,'..'), 'Makefile'),
+                          (os.path.join(directory,'..','build'), '.'),
+                          (directory, '.'),
+                          (os.path.join(directory,'..','tests'), '.')]:
+          svncmd=diffcmd + ' ' + path
           try:
             with subprocess.Popen(svncmd, shell=True, stdout=subprocess.PIPE, cwd=dir,
                                   universal_newlines=True, errors='replace').stdout as inf:

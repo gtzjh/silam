@@ -28,3 +28,32 @@ __pycache__/
 *.backup
 *.tmp
 *~
+
+# Generated source and local state under src/
+/src/**/revision.mod.f90
+/src/**/svndiff.mod.f90
+/src/**/tags
+/tags
+/TAGS
+
+# Generated build files under build/
+/build/**/silam_main.*
+/build/**/ascii_2_nc.*
+/build/**/frp_main_v2_0.*
+/build/**/Makefile.branch
+/build/**/DefaultSetup
+/build/**/test_*.objects
+/build/**/test_*.rules.*
+/build/**/test_*.dot
+
+# TeX / BibTeX auxiliary files under docs/assimilation/
+/docs/assimilation/**/*.aux
+/docs/assimilation/**/*.bbl
+/docs/assimilation/**/*.blg
+/docs/assimilation/**/*.lof
+/docs/assimilation/**/*.log
+/docs/assimilation/**/*.lot
+/docs/assimilation/**/*.toc
+/docs/assimilation/**/*.fls
+/docs/assimilation/**/*.fdb_latexmk
+/docs/assimilation/**/*.synctex.gz

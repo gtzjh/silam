@@ -5,8 +5,8 @@ silam :
 	cd ../build && $(MAKE) silam
 debug : 
 	cd ../build && $(MAKE) SETUP=gnu_debug
-tags : *.f90
+tags :
 	etags --ignore-case-regex='/ *interface *.*/' --ignore-case-regex='/ *integer,.*public.*/' --ignore-case-regex='/ *real,.*public.*/' \
---ignore-case-regex='/ *type [a-z_]*/' *.f90
+--ignore-case-regex='/ *type [a-z_]*/' $(shell find . -type f -name '*.f90' | LC_ALL=C sort)
 up : 
 	cd ../build/ && $(MAKE) up

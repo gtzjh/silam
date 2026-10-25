@@ -18,6 +18,9 @@ phenological inputs for the selected case.
 The [development guide](doc/dev/README.md) covers project structure, coding,
 builds, and verification.
 
+Production sources are grouped by function under `src/`. The three standalone
+test programs are in `tests/`. Existing Fortran module and file names are kept.
+
 ## BUILDING SILAM v6_1 in Ubuntu  20.04, 22.04, 24.04
 
 Get the source code
@@ -30,16 +33,16 @@ Install needed packages
 
 Compile the binary
 
-`$ cd silam-model/source/`
+`$ cd silam-model/`
 
-`$ make gnu`
+`$ make -C src gnu`
 
-`$ make`
+`$ make -C src`
 
-The latter command might require a second try. Finally, it should create a binary in ../bin,
+The latter command might require a second try. Finally, it should create a binary in bin/,
 that can be launched as:
 
-`$ ../bin/silam_v6_1pub.gnu`
+`$ ./bin/silam_v6_1pub.gnu`
 
 Silam should run and complain about missing silam.ini.
 Then the binary is ready to use! You can test it with a test case from

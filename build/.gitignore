@@ -2,3 +2,6 @@ silam_main.*
 ascii_2_nc.*
 frp_main_v2_0.*
 Makefile.branch
+test_*.objects
+test_*.rules.*
+test_*.dot

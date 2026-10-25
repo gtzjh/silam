@@ -27,8 +27,6 @@ use File::Spec;
 die(usage()) if (@ARGV < 2); 
 my ($filelist, $rootfile) = @ARGV;
     
-my $srcdirname = '$(SRCDIR)';
-
 # The "external" modules. Dependency to these is not included in the 
 # resulting makefile.
 
@@ -90,7 +88,7 @@ SOURCEFILE: foreach my $file_path(@sourcefiles) {
     $makef_itemcounter = 1;
     my $is_program = 0;
     my $openmp = '';
-    chop $file_path;
+    chomp $file_path;
     $fixed = ''; # a special flag for fortran_libraries
     $special = '';
     my ($vol, $dir, $fn) = File::Spec->splitpath($file_path); # get the basename of the file
@@ -118,11 +116,11 @@ SOURCEFILE: foreach my $file_path(@sourcefiles) {
 	    if (defined($fmake)) {
 		# write the name of object and its source file.
 		if ($is_program) {
-		    print $fmake "\$(OBJDIR)${modname}.o : ${srcdirname}$fn ";
-		    print $fh_make_simple "\$(OBJDIR)${modname}.o : ${srcdirname}$fn ";
+		    print $fmake "\$(OBJDIR)${modname}.o : $file_path ";
+		    print $fh_make_simple "\$(OBJDIR)${modname}.o : $file_path ";
 		} else {
-		    print $fmake "\$(OBJDIR)${modname}.mod.o : ${srcdirname}$fn ";
-		    print $fh_make_simple "\$(OBJDIR)${modname}.mod.o : ${srcdirname}$fn ";
+		    print $fmake "\$(OBJDIR)${modname}.mod.o : $file_path ";
+		    print $fh_make_simple "\$(OBJDIR)${modname}.mod.o : $file_path ";
 		}
 	    }
 	    
@@ -170,15 +168,15 @@ SOURCEFILE: foreach my $file_path(@sourcefiles) {
     # Now write the commands.
     if (defined($fmake)) {
 	unless ($is_program) {
-	    print $fmake "\n\t\$(F90C) \$(FFLAGS) \$(PREPROCESS) -c $special $fixed $openmp -o \$(OBJDIR)${modname}.mod.o -J\$(OBJDIR) \$(SRCDIR)${fn}";
+	    print $fmake "\n\t\$(F90C) \$(FFLAGS) \$(PREPROCESS) -c $special $fixed $openmp -o \$(OBJDIR)${modname}.mod.o -J\$(OBJDIR) $file_path";
 	    #print $fmake "|revision \n\t\$(F90C) \$(FFLAGS) -c $special $fixed $openmp -o \$(OBJDIR)${modname}.mod.o \$(SRCDIR)${fn}";
 	    #print $fh_make_simple "|revision \n\t\$(F90C) \$(FFLAGS) -c $special $fixed $openmp -o \$(OBJDIR)${modname}.mod.o \$(SRCDIR)${fn}";
-	    print $fh_make_simple "\n\t\$(F90C) \$(FFLAGS) \$(PREPROCESS) -c $special $fixed $openmp -o \$(OBJDIR)${modname}.mod.o \$(SRCDIR)${fn}";
+	    print $fh_make_simple "\n\t\$(F90C) \$(FFLAGS) \$(PREPROCESS) -c $special $fixed $openmp -o \$(OBJDIR)${modname}.mod.o $file_path";
       #	print $fmake "&& mv ${modname}.mod \$(OBJDIR)";
 		print $fh_make_simple "&& mv ${modname}.mod \$(OBJDIR)";
 	} else { 
-	    print $fmake "\n\t\$(F90C) \$(FFLAGS) \$(PREPROCESS)  -c $special $fixed $openmp -o \$(OBJDIR)${modname}.o \$(SRCDIR)${fn}";
-	    print $fh_make_simple "\n\t\$(F90C) \$(FFLAGS) \$(PREPROCESS) -c $special $fixed $openmp -o \$(OBJDIR)${modname}.o \$(SRCDIR)${fn}";
+	    print $fmake "\n\t\$(F90C) \$(FFLAGS) \$(PREPROCESS)  -c $special $fixed $openmp -o \$(OBJDIR)${modname}.o $file_path";
+	    print $fh_make_simple "\n\t\$(F90C) \$(FFLAGS) \$(PREPROCESS) -c $special $fixed $openmp -o \$(OBJDIR)${modname}.o $file_path";
 	}
 	print $fh_make_simple "\n\n"; 
 	print $fmake "\n\n";

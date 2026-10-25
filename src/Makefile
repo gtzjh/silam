@@ -2,6 +2,7 @@
 #Default setup. Overriden by DefaultSetup file
 SE=gnu
 DefaultSetup=DefaultSetup
+SOURCES=$(shell find . -type f -name '*.f90' | LC_ALL=C sort)
 
 # Include if exists
 -include ../build/Makefile.branch
@@ -51,11 +52,11 @@ full :
 	rm -f ../bin/$(PROGRAM)
 	ln -s $(PROGRAM).$(SE) ../bin/$(PROGRAM)
 
-tags : *.f90
+tags : $(SOURCES)
 	etags --ignore-case-regex='/ *interface *.*/' --ignore-case-regex='/ *integer,.*public.*/' --ignore-case-regex='/ *real,.*public.*/' \
---ignore-case-regex='/ *type [a-z_]*/' *.f90
+--ignore-case-regex='/ *type [a-z_]*/' $(SOURCES)
 
-ctags : *.f90
+ctags : $(SOURCES)
 	ctags -R --fortran-kinds=+i
 
 up : 

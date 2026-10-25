@@ -28,7 +28,9 @@ SILJA模块：  <name>.silja.mod.f90
 化学机制：   cbm<N>_<detail>_<Component>.f90
 ```
 
-源文件放在 `source/`，新模块优先使用小写字母和下划线。现有代码的命名变体见[实际命名模式分析](实际命名模式分析.md)。
+生产源码按功能放在 `src/` 的子目录，三个独立测试程序放在 `tests/`；主程序 `src/silam_main.f90` 保留在根层。目录职责见[项目结构与架构](项目结构与架构.md)，历史文件名和模块名保持不变，新模块优先使用小写字母和下划线。
+
+下面是历史分层的设计建议；功能目录不强制实现这些层次，现有源码也有跨层依赖，见[实际命名模式分析](实际命名模式分析.md)。
 
 ```text
 ✓ SILAM → SILJA → 基础层
@@ -45,19 +47,22 @@ SILJA模块：  <name>.silja.mod.f90
 
 ```bash
 # 首次编译：选择配置后构建
-make -C source gnu
-make -C source
+make -C src gnu
+make -C src
 
 # 增量编译
-make -C source
+make -C src
 
 # 清理重编
-make -C source clean
-make -C source
+make -C src clean
+make -C src
 
 # 调试版本：切换配置后构建
-make -C source gnu_debug
-make -C source
+make -C src gnu_debug
+make -C src
+
+# 独立测试程序：也可将 PROGRAM 改为 test_enkf 或 test_perturb
+make -C build -f makefile.generic PROGRAM=test_modules SETUP=gnu
 ```
 
 ## Git工作流
@@ -70,9 +75,9 @@ agent 自行决定本地 commit 时机。隔离任务完成后，合并回 `main
 
 ## 添加新模块
 
-1. 确定模块层次（SILAM/SILJA）及依赖方向。
-2. 在 `source/` 创建文件，参考[源码组织与命名](源码组织与命名.md)中的模块模板。
-3. 实现并集成模块，使用 `make -C source` 编译验证。
+1. 确定功能目录、模块职责及依赖方向，兼顾历史 SILAM/SILJA 命名。
+2. 在 `src/` 对应功能目录创建文件，独立测试程序放在 `tests/`；参考[源码组织与命名](源码组织与命名.md)中的模块模板。
+3. 实现并集成模块，使用 `make -C src` 编译验证。
 4. 运行与改动相关的测试；toypoint案例的配置和运行方法见 [toypoint说明](https://github.com/fmidev/silam-toypoint)。
 5. 更新受影响的文档，审查后按需要提交；隔离分支等待用户同意后再合并。
 
@@ -96,10 +101,11 @@ export OMP_STACKSIZE=100M
 
 | 文件 | 用途 |
 |------|------|
-| `source/silam_main.f90` | 主程序入口 |
-| `source/dispersion_models.*.f90` | 主调度器 |
-| `source/chemistry_manager.*.f90` | 化学管理器 |
-| `source/Makefile` | 编译配置选择和构建入口 |
+| `src/silam_main.f90` | 主程序入口 |
+| `src/transport/dispersion_models.*.f90` | 主调度器 |
+| `src/chem/chemistry_manager.*.f90` | 化学管理器 |
+| `src/Makefile` | 编译配置选择和构建入口 |
+| `tests/test_*.f90` | 三个独立测试程序 |
 | `build/makefile` | 构建系统 |
 | `build/options.gnu` | GNU编译选项 |
 

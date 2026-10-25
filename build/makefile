@@ -30,7 +30,8 @@ include $(BUILDDIR)/$(join options, $(ENDING))
 PROGRAM := $(PROGRAM)$(ENDING)
 
 # source code.
-SRCDIR = $(SILAM_ROOT)source/
+SRCDIR = $(SILAM_ROOT)src/
+SOURCES = $(shell find $(SRCDIR) -type f -name '*.f90' | LC_ALL=C sort)
 # object and .mod files
 OBJDIR = $(TMPDIR)/obj/$(SETUP)/
 # directory for the executable
@@ -70,15 +71,15 @@ clean:
 
 config:
 	mkdir -p $(OBJDIR) $(BINDIR)	
-	ls -1 $(SRCDIR)*.f90 > $(OBJDIR)/sourcelist
-	perl $(BUILDDIR)/config.pl $(OBJDIR)/sourcelist $(MODEL_MAIN) $(ARCH) \
+	printf '%s\n' $(SOURCES) > $(OBJDIR)/sourcelist
+	perl $(BUILDDIR)/config.pl $(OBJDIR)/sourcelist $(MODEL_MAIN) $(ARCH)
 	rm $(OBJDIR)/sourcelist
 	@echo Config OK.
 
 
 
-tags: $(SRCDIR)*.f90
-	cd $(SRCDIR) && $(MAKE) -f makefile.tags
+tags: $(SOURCES)
+	$(MAKE) -C $(SRCDIR) tags
 
 lib : expand config
 	$(MAKE) -f $(BUILDDIR)/makefile.lib
@@ -91,21 +92,18 @@ dot : expand config
 # If no f90 file has changed since last running check_revision, no need to do anything.
 # If something has been changed, check_revision will run and generate svndiff.mod.f90. 
 # revision.mod.f90 is only generated if revision is changed.
-last.revision : $(filter-out %svndiff.mod.f90, $(wildcard $(SRCDIR)/*.f90))
+last.revision : $(filter-out %svndiff.mod.f90, $(SOURCES))
 # if the filter-out is removed, svndiff will be always regenerated because it's newer than last.revision
 
-#	which svn && svn info ../source > last.revision.tmp && mv last.revision.tmp last.revision || rm -f last.revision.tmp
 	$(PYTHON) $(BUILDDIR)/check_revision $(SRCDIR)
 
 
 compact :
 	rm -rf $(SILAM_ROOT)/obj/*
-#	cd $(SILAM_ROOT) && tar cvf source.tar source && gzip source.tar
-	cd $(SILAM_ROOT) && zip -r source.zip source && rm -rf source
+	cd $(SILAM_ROOT) && zip -r source.zip src tests && rm -rf src tests
 
 expand :
 	cd $(SILAM_ROOT) && { if [ -e source.zip ]; then unzip source.zip && rm source.zip; fi }
-#	cd $(SILAM_ROOT) && tar xvf source.tar.gz
 
 up : expand
 	cd $(SRCDIR) && svn up
@@ -116,10 +114,11 @@ up : expand
 DISTRO = $(DISTRDIR)/$(PROGRAM)
 distr : config
 	rm -rf  $(DISTRO)
-	mkdir -p $(DISTRO)/source $(DISTRO)/bin $(DISTRO)/build $(DISTRO)/obj $(DISTRO)/ini
+	mkdir -p $(DISTRO)/src $(DISTRO)/tests $(DISTRO)/bin $(DISTRO)/build $(DISTRO)/obj $(DISTRO)/ini
 	cp -vp makefile makefile.* config.pl library.objects Makefile.branch options.*[!~] $(DISTRO)/build
 	touch $(DISTRO)/build/check_revision
-	cp -vp ../source/Makefile ../source/DefaultSetup ../source/*.f90 $(DISTRO)/source
+	cp -vp ../src/Makefile ../src/DefaultSetup ../src/.gitignore $(DISTRO)/src
+	cd $(SILAM_ROOT) && find src tests -type f -name '*.f90' -exec cp --parents -vp -t $(abspath $(DISTRO)) {} +
 	cp -vrp ../ini/*  $(DISTRO)/ini
 	cp -vrp ../doc $(DISTRO)
 	cp ../README.md ../LICENSE ../AGENTS.md $(DISTRO)

@@ -22,6 +22,11 @@ Production sources are grouped by function under `src/`. Test implementations
 and the three standalone test programs use matching folders under `tests/`.
 The [test guide](tests/README.md) describes their layout and build entry points.
 
+The [runtime resource guide](ini/README.md) indexes shared databases, format
+tables and historical configuration templates. Shared resources stay at the
+root of `ini/`; example controls and their templates are grouped by purpose
+under `ini/examples/` and may require external inputs or compatibility updates.
+
 ## BUILDING SILAM v6_1 in Ubuntu  20.04, 22.04, 24.04
 
 Get the source code

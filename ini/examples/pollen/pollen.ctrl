@@ -23,9 +23,9 @@ LIST = general_parameters
 #   emission_source = BIOGENIC_VOC
 #   emission_source = WILD_LAND_FIRES  <fire_file_name>
 #   emission_source = DESERT_DUST
-   emission_source = POLLEN  d:\!model\2011\silam_v5_0\ini\src_pollen_birch.ini
-   emission_source = POLLEN  d:\!model\2011\silam_v5_0\ini\src_pollen_grass.ini
-   emission_source = POLLEN  d:\!model\2011\silam_v5_0\ini\src_pollen_olive.ini
+   emission_source = POLLEN  d:\!model\2011\silam_v5_0\ini\examples\pollen\src_pollen_birch.ini
+   emission_source = POLLEN  d:\!model\2011\silam_v5_0\ini\examples\pollen\src_pollen_grass.ini
+   emission_source = POLLEN  d:\!model\2011\silam_v5_0\ini\examples\pollen\src_pollen_olive.ini
    
    cut_area_source_if_outside_meteo_grid = YES
    
@@ -125,7 +125,7 @@ LIST = general_parameters
  if_top_boundary =  NO             ! YES/NO 
  if_bottom_boundary =  NO          ! YES/NO 
  boundary_time_step =  1 hr        ! timestep unit 
- boundary_header_filename = d:\!model\2010\silam_v5_7\ini\boundary.ini
+ boundary_header_filename = d:\!model\2010\silam_v5_7\ini\examples\common\boundary.ini
  END_LIST = initial_and_boundary_conditions
  
  LIST = optical_density_parameters ##########################################################################
@@ -146,7 +146,7 @@ LIST = general_parameters
    file_types = GRIB_NO TRAJECTORY_NO GRADS_YES ENSEMBLE_NO NETCDF_NO 
    time_split = DAILY_NEW_FILE 
    template =  d:\!model\2011\silam_v5_0\output\%case\%case_%source_%y4%m2%d2
-   variable_list = d:\!model\2011\silam_v5_0\ini\output_config.ini
+   variable_list = d:\!model\2011\silam_v5_0\ini\examples\common\output_config.ini
    
    area_borders =  54. 57. 33.5 41.5 # south, north, west, east; North positive, east positive
    area_title = out_area

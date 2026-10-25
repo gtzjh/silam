@@ -34,24 +34,24 @@ horizontal_interpolation = LINEAR   # [NEAREST_POINT, SECOND_ORDER, CUBIC, LOG_L
 vertical_interpolation = LINEAR     # [NEAREST_POINT, SECOND_ORDER, CUBIC, LOG_LINEAR]
 time_interpolation = LINEAR         # [NEAREST_POINT, SECOND_ORDER, CUBIC, LOG_LINEAR]
 
-nuclide_database_fnm = ^silam_nuclides.dat
+nuclide_database_fnm = ^../../silam_nuclides.dat
 
-chemical_database_fnm = ^silam_chemicals.dat
+chemical_database_fnm = ^../../silam_chemicals.dat
 
-standard_cocktail_fnm = ^standard.cocktails
+standard_cocktail_fnm = ^../../standard.cocktails
 
-grib_code_table_fnm = ^grib_code_table_v5.silam
+grib_code_table_fnm = ^../../grib_code_table_v5.silam
 
-netcdf_name_table_fnm = ^netcdf_name_table.silam
+netcdf_name_table_fnm = ^../../netcdf_name_table.silam
 
-land_use_data_meta_file = ^land_use_features_USGS_Eurasia.dat
+land_use_data_meta_file = ^../../land_use_features_USGS_Eurasia.dat
 
-optical_properties_meta_data_file = ^optical_properties.dat
+optical_properties_meta_data_file = ^../../optical_properties.dat
 
 
-timezone_list_fnm = ^tzindex.dat
+timezone_list_fnm = ^../../tzindex.dat
 
-oh_climatology_file = ^clim_oh_v3.dat
+oh_climatology_file = ^../../clim_oh_v3.dat
 
 allow_zero_forecast_length = NO      # Whether zero-long forecasts may be used in the simulations
                                      # Beware of zero-valued accumulated fields

@@ -98,7 +98,7 @@ END_LIST = meteo_parameters
 
  LIST = emission_parameters    ######################################################################
 
-   emission_source = EULERIAN  d:\model\silam_dev\ini\src_pollen_birch_tst.ini
+   emission_source = EULERIAN  d:\model\silam_dev\ini\examples\pollen\src_pollen_birch_tst.ini
 #   emission_source = EULERIAN  d:\project\pollen\reanal_2018\ini\src_birch_as_a_src.hdr
    
    cut_area_source_if_outside_meteo_grid = YES
@@ -160,7 +160,7 @@ END_LIST = meteo_parameters
    if_top_boundary =  NO             ! YES/NO 
    if_bottom_boundary =  NO          ! YES/NO 
    boundary_time_step =  1 hr        ! timestep unit 
-   boundary_header_filename = d:\!model\2009\silam_v4_5_4\ini\boundary.ini
+   boundary_header_filename = d:\!model\2009\silam_v4_5_4\ini\examples\common\boundary.ini
  END_LIST = initial_and_boundary_conditions
  
  LIST = optical_density_parameters ##########################################################################

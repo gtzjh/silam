@@ -144,7 +144,7 @@ CONTROL_v5_3
    if_top_boundary =  NO             ! YES/NO 
    if_bottom_boundary =  NO          ! YES/NO 
    boundary_time_step =  1 hr        ! timestep unit 
-   boundary_header_filename = d:\!model\2009\silam_v4_5_7\ini\boundary.ini
+   boundary_header_filename = d:\!model\2009\silam_v4_5_7\ini\examples\common\boundary.ini
  END_LIST = initial_and_boundary_conditions
 
 
@@ -284,7 +284,7 @@ hybrid_coefficients_domain_top = 11632.76  0.586168
 !   output_format = TRAJECTORY
    time_split = DAILY_NEW_FILE 
    template = e:\model\silam_v5_7\output\%case\%case_%y4%m2%d2   # %source
-   variable_list = d:\model\silam_v5_7\ini\output_config_tst.ini
+   variable_list = d:\model\silam_v5_7\ini\examples\common\output_config_tst.ini
    
    grid_method =  CUSTOM_GRID  # AREA_BASED
 
@@ -346,8 +346,8 @@ hybrid_coefficients_domain_top = 11632.76  0.586168
   vertical_interpolation = LINEAR     # [NEAREST_POINT, SECOND_ORDER, CUBIC, LOG_LINEAR]
   time_interpolation = LINEAR         # [NEAREST_POINT, SECOND_ORDER, CUBIC, LOG_LINEAR]
 
-  nuclide_database_fnm = ^silam_nuclides.dat
-  chemical_database_fnm = ^silam_chemicals.dat
+  nuclide_database_fnm = ^../../silam_nuclides.dat
+  chemical_database_fnm = ^../../silam_chemicals.dat
   standard_cocktail_fnm = d:\model\silam_v5_7\ini\standard_aerosols_cocktails.ini
   standard_cocktail_fnm = d:\model\silam_v5_7\ini\standard_auxillary_cocktails.ini
   standard_cocktail_fnm = d:\model\silam_v5_7\ini\standard_chemistry_cocktails.ini
@@ -355,11 +355,11 @@ hybrid_coefficients_domain_top = 11632.76  0.586168
   standard_cocktail_fnm = d:\model\silam_v5_7\ini\standard_radioactive_cocktails.ini
   standard_cocktail_fnm = d:\model\silam_v5_7\ini\standard_SOA_cocktails.ini
   standard_cocktail_fnm = d:\model\silam_v5_7\ini\cocktails_BATMAN.ini
-  grib_code_table_fnm = ^grib_code_table_v5.silam
-  netcdf_name_table_fnm = ^netcdf_name_table.silam
-  land_use_data_meta_file = ^land_use_features_USGS_Eurasia.dat
-  optical_properties_meta_data_file = ^optical_properties.dat
-  timezone_list_fnm = ^tzindex.dat
+  grib_code_table_fnm = ^../../grib_code_table_v5.silam
+  netcdf_name_table_fnm = ^../../netcdf_name_table.silam
+  land_use_data_meta_file = ^../../land_use_features_USGS_Eurasia.dat
+  optical_properties_meta_data_file = ^../../optical_properties.dat
+  timezone_list_fnm = ^../../tzindex.dat
 
   allow_zero_forecast_length = NO      # Whether zero-long forecasts may be used in the simulations
                                        # Beware of zero-valued accumulated fields

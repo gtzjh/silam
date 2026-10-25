@@ -18,7 +18,7 @@ LIST = general_parameters
  LIST = emission_parameters    ######################################################################
  
    emission_source = INVENTORY EULERIAN d:\model\silam_v5_7\ini\CO_passive_MACCcity_glob_2008_ext_inf.sa
-   emission_source = INVENTORY EULERIAN d:\model\silam_v5_7\ini\src_new_air.as3
+   emission_source = INVENTORY EULERIAN d:\model\silam_v5_7\ini\examples\transport\src_new_air.as3
    
    cut_area_source_if_outside_meteo_grid = YES
    
@@ -90,7 +90,7 @@ LIST = general_parameters
  if_top_boundary =  NO             ! YES/NO 
  if_bottom_boundary =  NO          ! YES/NO 
  boundary_time_step =  1 hr        ! timestep unit 
- boundary_header_filename = d:\!model\2009\silam_v5_7\ini\boundary.ini
+ boundary_header_filename = d:\!model\2009\silam_v5_7\ini\examples\common\boundary.ini
  END_LIST = initial_and_boundary_conditions
  
  LIST = optical_density_parameters ##########################################################################
@@ -149,7 +149,7 @@ LIST = general_parameters
 !   output_format = TRAJECTORY
    time_split = DAILY_NEW_FILE 
    template =  d:\model\silam_v5_7\output\%case\%case_%y4%m2%d2   # %source
-   variable_list = d:\model\silam_v5_7\ini\output_config.ini
+   variable_list = d:\model\silam_v5_7\ini\examples\common\output_config.ini
    
    grid_method =  CUSTOM_GRID  # AREA_BASED
 
@@ -194,14 +194,14 @@ LIST = STANDARD_SETUP
   vertical_interpolation = LINEAR     # [NEAREST_POINT, SECOND_ORDER, CUBIC, LOG_LINEAR]
   time_interpolation = LINEAR         # [NEAREST_POINT, SECOND_ORDER, CUBIC, LOG_LINEAR]
 
-  nuclide_database_fnm = ^silam_nuclides.dat
-  chemical_database_fnm = ^silam_chemicals.dat
-  standard_cocktail_fnm = ^standard.cocktails
-  grib_code_table_fnm = ^grib_code_table_v5.silam
-  netcdf_name_table_fnm = ^netcdf_name_table.silam
-  land_use_data_meta_file = ^land_use_features_USGS_Eurasia.dat
-  optical_properties_meta_data_file = ^optical_properties.dat
-  timezone_list_fnm = ^tzindex.dat
+  nuclide_database_fnm = ^../../silam_nuclides.dat
+  chemical_database_fnm = ^../../silam_chemicals.dat
+  standard_cocktail_fnm = ^../../standard.cocktails
+  grib_code_table_fnm = ^../../grib_code_table_v5.silam
+  netcdf_name_table_fnm = ^../../netcdf_name_table.silam
+  land_use_data_meta_file = ^../../land_use_features_USGS_Eurasia.dat
+  optical_properties_meta_data_file = ^../../optical_properties.dat
+  timezone_list_fnm = ^../../tzindex.dat
 
   allow_zero_forecast_length = NO      # Whether zero-long forecasts may be used in the simulations
                                        # Beware of zero-valued accumulated fields

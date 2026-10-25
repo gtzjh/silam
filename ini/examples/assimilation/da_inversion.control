@@ -138,7 +138,7 @@ LIST = general_parameters
    file_types = GRIB_NO TRAJECTORY_NO GRADS_YES ENSEMBLE_NO NETCDF_NO 
    time_split = ALL_IN_ONE#DAILY_NEW_FILE 
    template =  $OUTPUTDIR/%case
-   variable_list = $BASEDIR/ini/output_config.ini
+   variable_list = $BASEDIR/ini/examples/common/output_config.ini
    
    $GRID
 
@@ -195,7 +195,7 @@ emis_time_slot = $EMIS_TIME_SLOT
 # Covariance setups, similarly if included.
 # 
 cov_setup_initial = $BASEDIR/cov.ini
-cov_setup_emission = $BASEDIR/ini/cov_time_height.ini
+cov_setup_emission = $BASEDIR/ini/examples/assimilation/cov_time_height.ini
 
 # Disable the background term in the cost function. Implemented with a hack; be careful.
 disable_background = yes

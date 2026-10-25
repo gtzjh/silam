@@ -608,6 +608,11 @@ MODULE grids_geo
 
   
   
+  interface
+    module subroutine grid_tst()
+    end subroutine grid_tst
+  end interface
+
 CONTAINS
 
 
@@ -9096,19 +9101,6 @@ endif
 
   !***************************************************************
 
-  subroutine grid_tst()
-    
-    implicit none
-
-    type(silam_area) :: area
-    type(silja_grid) :: grid1, grid2
-
-  
-    
-  
-  
-  
-  end subroutine grid_tst
 
 
 END MODULE grids_geo

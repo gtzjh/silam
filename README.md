@@ -18,8 +18,9 @@ phenological inputs for the selected case.
 The [development guide](doc/dev/README.md) covers project structure, coding,
 builds, and verification.
 
-Production sources are grouped by function under `src/`. The three standalone
-test programs are in `tests/`. Existing Fortran module and file names are kept.
+Production sources are grouped by function under `src/`. Test implementations
+and the three standalone test programs use matching folders under `tests/`.
+The [test guide](tests/README.md) describes their layout and build entry points.
 
 ## BUILDING SILAM v6_1 in Ubuntu  20.04, 22.04, 24.04
 

@@ -57,6 +57,21 @@ module ensemble_driver
   end type t_ensemble
 
   
+  ! Test implementations are in tests/assimilation/test_ensemble_driver_impl.f90.
+  interface
+    module subroutine test_repl_loc(replicate_localisation)
+      interface
+        subroutine replicate_localisation(loc_full_step, loc_chunk, &
+            num_steps, size_full_step, my_offset, my_size)
+          implicit none
+          real, dimension(:,:), intent(in) :: loc_full_step
+          real, dimension(:,:), intent(out) :: loc_chunk
+          integer, intent(in) :: num_steps, size_full_step, my_offset, my_size
+        end subroutine replicate_localisation
+      end interface
+    end subroutine test_repl_loc
+  end interface
+
   CONTAINS
 
   !************************************************************************************
@@ -1500,7 +1515,7 @@ module ensemble_driver
                & model_localisation_chunk(2, my_size*ens%num_steps), stat=stat)
         if (fu_fails(stat == 0, 'Allocate failed (model loc)', sub_name)) return
         call get_localisation(ens%states(1), model_localisation_full, darules)
-        !call test_repl_loc()
+        !call test_repl_loc(replicate_localisation)
         call replicate_localisation(model_localisation_full, model_localisation_chunk, &
                                   & ens%num_steps, fu_size(ens%states(1)), &
                                   & my_offset, my_size)
@@ -1708,38 +1723,6 @@ module ensemble_driver
 
     !======================================================================
 
-    subroutine test_repl_loc()
-      implicit none
-      
-      real, dimension(1,8) :: loc_full_step
-      integer, parameter :: num_steps = 2
-      real, target :: loc_chunk1(1,3*num_steps), loc_chunk2(1,3*num_steps), loc_chunk3(1,2*num_steps)
-      type(silja_rp_2d), dimension(3) :: chunkptr
-
-      integer, dimension(3) :: sizes = (/6,6,4/), offsets=(/1, 7, 13/)
-      integer ::ii, ind_chunk
-
-      chunkptr(1)%pp => loc_chunk1
-      chunkptr(2)%pp => loc_chunk2
-      chunkptr(3)%pp => loc_chunk3
-      
-      loc_full_step(1,:) = (/(ii, ii=1, 8)/)
-      
-      do ind_chunk = 1, 3
-        call replicate_localisation(loc_full_step, chunkptr(ind_chunk)%pp, num_steps, 8, &
-                                  & offsets(ind_chunk), sizes(ind_chunk))
-      end do
-      
-      print *, 'loc_full_step', loc_full_step
-      print *, ''
-
-      do ind_chunk = 1, 3
-        print *, 'loc', ind_chunk, chunkptr(ind_chunk)%pp
-      end do
-
-      !stop
-      
-    end subroutine test_repl_loc
 
   end subroutine run_enks
   

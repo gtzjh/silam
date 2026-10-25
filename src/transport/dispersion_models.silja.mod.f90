@@ -38,6 +38,11 @@ MODULE dispersion_models
 !  private create_cocktail_map_set
 !  private distribute_cocktail_maps
 
+  interface
+    module subroutine exec_tests()
+    end subroutine exec_tests
+  end interface
+
 CONTAINS
 
   ! ***************************************************************
@@ -1728,19 +1733,5 @@ CONTAINS
 !  
 !end subroutine create_grib2_code_table
 !
-  
-  subroutine exec_tests()
-    ! 
-    ! Add here whatever tests to execute before SILAM starts.
-    ! 
-    use photolysis
-    use silam_levels
-    implicit none
-    
-    continue
-
-  end subroutine exec_tests
-
-
 END MODULE dispersion_models
 

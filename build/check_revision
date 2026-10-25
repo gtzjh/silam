@@ -105,7 +105,7 @@ def getRevisionGIT(directory):
             raise RevisionError('Failed to read revision from git')
         revstr = "%s GIT-SVN (r%s, aka %s)"%(branchname, revno, gitrev[0:8])
 
-        diffcmd = "git diff %s"%(gitrev)
+        diffcmd = "git diff %s"%(gitrevnow)
     except Exception as e:
         print (e)
         raise
@@ -209,9 +209,11 @@ contains
 
 
         svncmd=diffcmd + ' .'
-        for dir in [os.path.join(directory,'..','build'), directory]:
+        for dir in [os.path.join(directory,'..','build'), directory,
+                    os.path.join(directory,'..','tests')]:
           try:
-            with  subprocess.Popen(svncmd, shell=True, stdout=subprocess.PIPE, cwd=dir, universal_newlines=True).stdout as inf:
+            with subprocess.Popen(svncmd, shell=True, stdout=subprocess.PIPE, cwd=dir,
+                                  universal_newlines=True, errors='replace').stdout as inf:
                 diff_f90.write("call msg(\"Output of svn diff at "+dir+"\")\n")
                 for l in inf:
                     l=re.sub("\r","",l[:-1])

@@ -80,6 +80,8 @@ close($fh);
 # into memory to later find the real order of dependence.
 
 our %deptree;
+my %submodule_parent;
+my @submodules;
 my %modname2fn; # this translates the module names to file names.
 my ($modname, $uses, $root_module, $makef_itemcounter, $fixed, $modname_lc);
 our @stack;
@@ -87,6 +89,7 @@ $in_type_def = 0;
 SOURCEFILE: foreach my $file_path(@sourcefiles) {
     $makef_itemcounter = 1;
     my $is_program = 0;
+    my $is_submodule = 0;
     my $openmp = '';
     chomp $file_path;
     $fixed = ''; # a special flag for fortran_libraries
@@ -106,12 +109,16 @@ SOURCEFILE: foreach my $file_path(@sourcefiles) {
     my $use_array = [];
     
     while (my $line = <$fh2>) {
-	if (($line =~ /(^\s*)module/i || $line =~ /^\s*program/i) && !$modname) {
-	    # The header line of a module (or the program)
-	    $is_program = ($line =~ /^\s*program/i); 
-	    ($modname) = ($line =~ /^\s*(?:module|program) +(\w*)/i);
-	    $modname =~ s/ //g;
-	    $modname = lc($modname);
+	if (!$modname && $line =~ /^\s*(?:(module|program)\s+(\w+)|submodule\s*\(\s*(\w+)\s*\)\s*(\w+))/i) {
+	    # A submodule implements procedures declared by its parent module.
+	    $is_program = (lc($1 || '') eq 'program');
+	    $is_submodule = defined($4);
+	    $modname = lc($is_submodule ? $4 : $2);
+	    if ($is_submodule) {
+		$submodule_parent{$modname} = lc($3);
+		push @submodules, $modname;
+		push @$use_array, $submodule_parent{$modname};
+	    }
 	    print $fhex "$modname \n" if (defined($fhex));
 	    if (defined($fmake)) {
 		# write the name of object and its source file.
@@ -121,6 +128,10 @@ SOURCEFILE: foreach my $file_path(@sourcefiles) {
 		} else {
 		    print $fmake "\$(OBJDIR)${modname}.mod.o : $file_path ";
 		    print $fh_make_simple "\$(OBJDIR)${modname}.mod.o : $file_path ";
+		}
+		if ($is_submodule) {
+		    print $fmake "\$(OBJDIR)$submodule_parent{$modname}.mod.o ";
+		    print $fh_make_simple "\$(OBJDIR)$submodule_parent{$modname}.mod.o ";
 		}
 	    }
 	    
@@ -171,9 +182,8 @@ SOURCEFILE: foreach my $file_path(@sourcefiles) {
 	    print $fmake "\n\t\$(F90C) \$(FFLAGS) \$(PREPROCESS) -c $special $fixed $openmp -o \$(OBJDIR)${modname}.mod.o -J\$(OBJDIR) $file_path";
 	    #print $fmake "|revision \n\t\$(F90C) \$(FFLAGS) -c $special $fixed $openmp -o \$(OBJDIR)${modname}.mod.o \$(SRCDIR)${fn}";
 	    #print $fh_make_simple "|revision \n\t\$(F90C) \$(FFLAGS) -c $special $fixed $openmp -o \$(OBJDIR)${modname}.mod.o \$(SRCDIR)${fn}";
-	    print $fh_make_simple "\n\t\$(F90C) \$(FFLAGS) \$(PREPROCESS) -c $special $fixed $openmp -o \$(OBJDIR)${modname}.mod.o $file_path";
+	    print $fh_make_simple "\n\t\$(F90C) \$(FFLAGS) \$(PREPROCESS) -c $special $fixed $openmp -o \$(OBJDIR)${modname}.mod.o -J\$(OBJDIR) $file_path";
       #	print $fmake "&& mv ${modname}.mod \$(OBJDIR)";
-		print $fh_make_simple "&& mv ${modname}.mod \$(OBJDIR)";
 	} else { 
 	    print $fmake "\n\t\$(F90C) \$(FFLAGS) \$(PREPROCESS)  -c $special $fixed $openmp -o \$(OBJDIR)${modname}.o $file_path";
 	    print $fh_make_simple "\n\t\$(F90C) \$(FFLAGS) \$(PREPROCESS) -c $special $fixed $openmp -o \$(OBJDIR)${modname}.o $file_path";
@@ -213,6 +223,19 @@ print $fh_objects 'COMMON_OBJS =' if (defined($fh_objects));
 # dependency.
 
 visit($root_module);
+
+# A USE of the parent does not name its separate implementations. Include
+# available children of linked parents, including test-to-test dependencies.
+my $added = 1;
+while ($added) {
+    $added = 0;
+    foreach my $child (@submodules) {
+	next if $deptree{$child}->{'visited'};
+	next unless $deptree{$submodule_parent{$child}}->{'visited'};
+	visit($child);
+	$added = 1;
+    }
+}
 
 foreach $fh(($fmake, $fhex, $fhtree, $fh_objects)) {
     (close $fh or die) if defined($fh);

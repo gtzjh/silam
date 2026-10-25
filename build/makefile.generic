@@ -60,7 +60,7 @@ only :
 	$(MAKE) -f$(BUILDDIR)/makefile.any
 
 clean:
-	rm -f $(OBJDIR)*.o $(OBJDIR)*.mod $(BINDIR)$(PROGRAM)$(ENDING)
+	rm -f $(OBJDIR)*.o $(OBJDIR)*.mod $(OBJDIR)*.smod $(BINDIR)$(PROGRAM)$(ENDING)
 
 config:
 	mkdir -p $(OBJDIR)
@@ -103,6 +103,7 @@ distr : expand revision config
 	cp -v makefile makefile.* config.pl library.objects Makefile.branch options.*[!~] $(DISTRO)/build
 	touch $(DISTRO)/build/check_revision
 	cp -vp ../src/Makefile ../src/.gitignore $(DISTRO)/src
+	cp -vp ../tests/README.md $(DISTRO)/tests
 	cd $(SILAM_ROOT) && find src tests -type f -name '*.f90' -exec cp --parents -vp -t $(abspath $(DISTRO)) {} +
 	cp -vrp ../ini ../doc $(DISTRO)
 	cp ../README.md ../LICENSE ../AGENTS.md $(DISTRO)

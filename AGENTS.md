@@ -87,7 +87,8 @@ instructions when they differ from these rules.
 
 - Keep SILAM's `src/`, `tests/`, `build/`, and `ini/` structure and build
   system. Put model sources in the functional subdirectories under `src/`
-  and standalone test programs in `tests/`. Read the relevant guides in
+  and test implementations in matching functional folders under `tests/`.
+  Read the relevant guides in
   `doc/dev/` before changing them.
 - Do not define custom classes or return their instances from functions.
 - Treat parameter values supplied directly by the user as valid. Do not add

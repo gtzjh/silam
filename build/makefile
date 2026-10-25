@@ -31,7 +31,9 @@ PROGRAM := $(PROGRAM)$(ENDING)
 
 # source code.
 SRCDIR = $(SILAM_ROOT)src/
-SOURCES = $(shell find $(SRCDIR) -type f -name '*.f90' | LC_ALL=C sort)
+# Wind initialization uses this reference self-test during normal model runs.
+SOURCES = $(shell find $(SRCDIR) -type f -name '*.f90' | LC_ALL=C sort) \
+          $(SILAM_ROOT)tests/numerics/test_fishpack_silam_impl.f90
 # object and .mod files
 OBJDIR = $(TMPDIR)/obj/$(SETUP)/
 # directory for the executable
@@ -67,7 +69,7 @@ silam_only :
 
 
 clean:
-	rm -f $(OBJDIR)*.o $(OBJDIR)*.mod $(BINDIR)$(PROGRAM)
+	rm -f $(OBJDIR)*.o $(OBJDIR)*.mod $(OBJDIR)*.smod $(BINDIR)$(PROGRAM)
 
 config:
 	mkdir -p $(OBJDIR) $(BINDIR)	
@@ -118,6 +120,7 @@ distr : config
 	cp -vp makefile makefile.* config.pl library.objects Makefile.branch options.*[!~] $(DISTRO)/build
 	touch $(DISTRO)/build/check_revision
 	cp -vp ../src/Makefile ../src/DefaultSetup ../src/.gitignore $(DISTRO)/src
+	cp -vp ../tests/README.md $(DISTRO)/tests
 	cd $(SILAM_ROOT) && find src tests -type f -name '*.f90' -exec cp --parents -vp -t $(abspath $(DISTRO)) {} +
 	cp -vrp ../ini/*  $(DISTRO)/ini
 	cp -vrp ../doc $(DISTRO)

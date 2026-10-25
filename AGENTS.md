@@ -1,158 +1,38 @@
-# SILAM agent instructions
+# SILAM 代理工作规范
 
-These rules apply to this project and its agents. Follow the user's current
-instructions when they differ from these rules.
+这些规则适用于本项目及参与工作的代理。若用户当前的指令与这些规则不同，以用户当前的指令为准。
 
-## Documentation and communication
+## 项目概况
 
-- Use Simplified Chinese for user-facing explanations unless another language
-  is requested. Give the result first. Keep terms and sentences clear.
-- This file defines execution rules. `README.md` gives project, build, and run
-  entry points. `docs/dev/` contains the detailed development guides.
-- Maintain only the root `README.md`. Put directory overviews and usage
-  instructions in its relevant sections; do not create README files in
-  subdirectories, including alternate names such as `00README`. Keep detailed
-  topic guides in `docs/dev/` and link to them from the root README.
-- Maintain ignore rules only in the root `.gitignore`; do not create
-  subdirectory `.gitignore` files. Scope directory-specific rules with paths
-  relative to the project root. Preserve recursive matching and exceptions
-  when moving or changing rules.
-- Keep long-term technical conclusions in the relevant development guide.
-  Do not create task logs or MEMORY files. Do not require log IDs or commit
-  trailers. Use Git history to trace changes.
-- Inspect current code, configuration, and relevant documents before asking
-  factual questions. Separate verified facts, interpretations, and uncertainty.
-- Use the task's authoritative sources. If documents, code, or results conflict,
-  report the mismatch. Ask before changing an agreed scientific interpretation.
+本仓库面向大气花粉模拟，保留 SILAM 主模型、共享输送与沉降过程，以及化学求解器。非花粉模块仍有公共依赖。
 
-## Decisions and scope
+已移除 KPP 生成器、化学箱模型、火灾预处理、独立格式转换工具、旧平台配置和专用非花粉示例。保留 GNU 发布、调试及 MPI 配置。
 
-- Carry out clear, local, reversible work within the user's authorized scope.
-  Analysis, review, and discussion requests remain read-only until the user
-  authorizes implementation. Respect explicit run and checkpoint boundaries.
-- Ask only about unresolved choices that materially affect the objective,
-  scope, architecture, interfaces, data definitions, or execution cost. Group
-  independent questions and give a recommendation with its main trade-off.
-- Do not repeat settled questions. If a material premise changes, explain it
-  and ask only about the changed decision.
-- Make the smallest clear change that meets the request. Reuse existing code
-  and tools. Preserve behavior and interfaces outside the agreed scope.
-- Preserve unrelated working-tree changes and user data. Include only the
-  intended changes in a commit.
+## 文档规范
 
-## Branches and Git approval
+- 除非用户要求其他语言，否则面向用户的说明使用简体中文。
+- 只维护根目录的 `README.md`，其开头的介绍性正文必须恰好为两句话。不要在子目录中创建 README 文件。
+- 只在根目录的 `.gitignore` 中维护忽略规则；不要在子目录中创建 `.gitignore` 文件。
+- 不要创建任务日志或 MEMORY 文件。
+- 更改已达成一致的科学解释前，先征求用户意见。
 
-- Develop on `main` by default. Keep the primary working tree on `main`.
-- Before editing, inspect the impact and verification needs. A small task has
-  one clear goal, a bounded change, stable shared interfaces and module roles,
-  and checks that fit the existing verification process. A local change with
-  its matching tests can still be small.
-- For a larger task, ask whether to create a branch and use a worktree before
-  the first edit. Explain the scope, the reason for isolation, and the proposed
-  branch and path. Ask when any of these conditions applies:
-  - A complete plan has several implementation stages or acceptance goals.
-  - Several functional modules need coordinated changes to interfaces, shared
-    data, or call flow.
-  - Module roles, public interfaces, data formats, toolchains, or dependencies
-    change.
-  - Scientific formulas, units, key numerical methods, precision, or parallel
-    computation behavior change.
-  - Verification expands substantially, or test acceptance criteria or numeric
-    reference results change.
-- File and line counts are supporting information. They do not decide task
-  size on their own. Inspect an unclear scope before asking the user.
-- Create a branch or worktree only when the user requests it or agrees to the
-  proposed isolation. If the user chooses `main`, continue there for the agreed
-  task. Ask again only if the scope changes materially.
-- Agents may decide when to make local commits. No fixed commit count is
-  required for a task.
-- After isolated work is complete, report its changes, checks, and limits.
-  Wait for the user's explicit approval before merging it into `main`.
-- A push always requires the user's explicit approval. Approval to create a
-  branch, create a worktree, or commit does not authorize a merge or push.
+## 关键约束
 
-## Worktrees
+- 默认在 `main` 上开发，主工作树保持在 `main` 分支。只有用户要求或同意后，才创建分支或工作树。
+- 较大任务在首次编辑前询问是否使用分支和工作树：包括跨模块协调修改接口、共享数据或调用流程；改变模块职责、公共接口、数据格式、工具链或依赖；改变科学公式、单位、关键数值方法、精度或并行计算行为；显著扩大验证范围或改变测试验收标准、数值参考结果。
+- 隔离工作合并到 `main` 前须获得用户明确批准；推送始终需要用户明确批准。
+- 如实报告失败和跳过的检查。未完成的检查必须标为“未验证”，不得将案例执行或文件创建当作数值一致的证明。
 
-- Put worktrees under `.worktree/<task-or-branch-name>/` in the project root.
-  Keep `/.worktree/` ignored by the primary working tree.
-- Use a separate worktree for each independent task that needs isolation.
-  Agents on the same task can share one worktree with separate file ownership.
-- Base new task branches on committed `main` unless the user specifies another
-  base. An existing branch keeps its history when attached to a worktree.
-- Uncommitted, untracked, and ignored files do not transfer to a new worktree.
-  Check its local build configuration before compiling.
-- Keep build configuration, generated files, executables, object files, and
-  run outputs local to that worktree. If `TMPDIR` is set, point it to that
-  worktree's task temporary directory. Do not share writable build outputs.
-- The main agent coordinates Git writes and integration. Keep the worktree
-  while its completed changes await merge approval.
-- After integration, check modified, untracked, and ignored files for work or
-  results that must be kept. Preserve deliverables before cleanup. Remove a
-  completed worktree with `git worktree remove`, then delete its merged task
-  branch. Do not force removal or discard unmerged work without authorization.
+## 按需加载
 
-## Implementation
+开始相关工作前，读取下表对应文档；任务涉及多个主题时，加载所有相关文档。以下路径均相对于项目根目录。
 
-- Keep SILAM's `src/`, `tests/`, `build/`, and `ini/` structure and build
-  system. Put model sources in the functional subdirectories under `src/`
-  and test implementations in matching functional folders under `tests/`.
-  Read the relevant guides in
-  `docs/dev/` before changing them.
-- Do not define custom classes or return their instances from functions.
-- Treat parameter values supplied directly by the user as valid. Do not add
-  validation for them. When changing the affected code, remove that validation
-  and tests that only check it. Preserve other required behavior and checks.
-- Prefer simple logic, then fewer modules, functions, branches, and parameters.
-  Reduce line count last. Do not join unrelated statements to shorten code.
-- Do not add Pydantic or a new CLI unless the user requests it. Avoid unneeded
-  features, abstractions, dependencies, and configuration.
-- Load the local `r-for-data-science` skill before writing or changing R code
-  when it is available. Use other applicable language skills as required.
+| 文档 | 加载时机 | 内容 |
+|---|---|---|
+| [版本管理](docs/版本管理.md) | 创建或切换分支、创建或清理工作树、合并、推送前 | 分支授权、隔离开发、合并与清理 |
+| [代码开发](docs/代码开发.md) | 阅读、定位、编写或修改代码前 | 实现规范、模块职责、源码入口与命名 |
+| [构建与调试](docs/构建与调试.md) | 安装依赖、编译或排查构建及调试问题前 | 构建命令、依赖机制、编译与栈问题排查 |
+| [测试与验证](docs/测试与验证.md) | 规划代码修改的验证、修改或执行测试、评价结果前 | 验证要求、测试入口、验收与现有局限 |
+| [运行与配置](docs/运行与配置.md) | 查看或修改运行配置、准备输入、运行案例或排查输入路径前 | 运行资源、路径规则、输入限制与本地点源案例 |
 
-## Verification and environment
-
-- Match checks to the changed behavior and risk. Use relevant existing checks.
-  Add or change tests when needed to verify behavior. Keep costly experiments
-  and output regeneration within the authorized scope.
-- Distinguish environment checks, compilation, case execution, and numerical
-  regression. Each result applies only to what that check establishes.
-- For numerical regression, define the inputs, reference outputs, variables,
-  units, metrics, and tolerances. Record the relevant code version, build
-  configuration, and runtime settings with the result.
-- Report failures and skipped or unavailable checks as such. A check that was
-  not completed is NOT VERIFIED. Do not present case execution or file creation
-  as proof of numerical agreement.
-- Record relevant compiler, dependency, and build-option changes in the build
-  documentation and configuration. Keep the existing Make and platform
-  workflows. A container is required only if the user adopts that workflow.
-- After checks pass, repeat or broaden them only when a change, failure, or
-  unresolved concern requires it.
-
-## Temporary files
-
-- Use the active working-tree root. Create one task directory under
-  `.tmp/<task-name>-<YYYYMMDD-HHMMSS>/` only when temporary files are needed.
-  Add a suffix if that name exists.
-- Put temporary scripts, logs, downloads, caches, and intermediate results in
-  that directory. Configure tools to use it when supported. Do not commit it.
-- Keep maintained tests, deliverables, and user data in their required project
-  locations. Move required results out before deleting the task directory.
-- At completion, confirm the full temporary path is inside this working tree's
-  `.tmp/`. Delete only this task's directory and confirm it no longer exists.
-  Keep `.tmp/` itself and other tasks' content. Report any cleanup that failed.
-- Keep `/.tmp/` ignored in the working tree.
-
-## Subagents and delivery
-
-- Delegate when useful. Give each agent one bounded objective and a clear
-  output. Use ASD-STE100 Simplified Technical English for subagent instructions
-  and reports. Run independent work in parallel and dependent work in order.
-- The main agent owns scope, architecture, interfaces, integration, and final
-  checks. For substantial parallel work, define boundaries, data flow, and
-  acceptance criteria before delegation. Add interface scaffolding only when
-  coordination needs it. Do not assign concurrent edits to the same file.
-- Scale exploration, execution, and independent review to the task. Small
-  local changes do not require a full agent team. Resolve review findings and
-  verify the fixes.
-- Check that deliverables exist. Report what changed, what was verified,
-  material unverified limits, and any remaining cleanup items.
+普通代码修改加载“代码开发”和“测试与验证”；需要编译时再加载“构建与调试”，需要运行案例时再加载“运行与配置”。

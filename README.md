@@ -1,7 +1,22 @@
 # Silam public distribution 
 
-This is a full-featured source code of the Silam model
-with striped revision history
+This checkout is maintained for atmospheric pollen simulations. It keeps the
+SILAM main model, shared transport and deposition code, and the existing
+generated chemistry solvers.
+
+KPP code generation, the chemistry box model, fire preprocessing, standalone
+format converters, lagged-input tools, and old platform configurations have
+been removed. GNU release, debug, and MPI configurations remain available.
+The bundled photolysis lookup table and dedicated non-pollen examples are
+omitted; CBM chemistry runs require an external compatible lookup table.
+Pollen templates still require suitable meteorological, vegetation, and
+phenological inputs for the selected case.
+
+## Development
+
+[AGENTS.md](AGENTS.md) defines agent execution and Git approval rules.
+The [development guide](doc/dev/README.md) covers project structure, coding,
+builds, and verification.
 
 ## BUILDING SILAM v6_1 in Ubuntu  20.04, 22.04, 24.04
 

@@ -359,7 +359,6 @@ hybrid_coefficients_domain_top = 11632.76  0.586168
   netcdf_name_table_fnm = ^netcdf_name_table.silam
   land_use_data_meta_file = ^land_use_features_USGS_Eurasia.dat
   optical_properties_meta_data_file = ^optical_properties.dat
-  photolysis_data_file = ^photolysis_finrose.dat
   timezone_list_fnm = ^tzindex.dat
 
   allow_zero_forecast_length = NO      # Whether zero-long forecasts may be used in the simulations

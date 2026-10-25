@@ -46,18 +46,6 @@ RULES = full
 # The location of main program for the model
 MODEL_MAIN = silam_main
 
-# The location of main program for the box model
-BOX_MAIN = box_model
-
-# The main program for grads-grib converter
-GRADS2GRIB_MAIN = grads_2_grib2
-
-# The main program for ascii-nc converter
-ASCII2NC_MAIN = ascii_2_nc
-
-# The main program for is4fires
-IS4FIRES_MAIN = frp_main_v2_0
-
 # build targets
 all : silam
 
@@ -75,22 +63,6 @@ silam_only :
 	mkdir -p $(OBJDIR) $(BINDIR)	
 	$(MAKE) -f$(BUILDDIR)/makefile.model
 
-box : expand config_box last.revision
-	mkdir -p $(OBJDIR) $(BINDIR)	
-	$(MAKE) -f$(BUILDDIR)/makefile.box
-
-grads2grib : expand config_grads2grib last.revision
-	mkdir -p $(OBJDIR) $(BINDIR)	
-	$(MAKE) -f$(BUILDDIR)/makefile.grads2grib 
-
-is4fires : expand config_is4fires last.revision
-	mkdir -p $(OBJDIR) $(BINDIR)	
-	$(MAKE) -f$(BUILDDIR)/makefile.is4fires
-
-ascii2nc: expand config_ascii2nc last.revision
-	mkdir -p $(OBJDIR) $(BINDIR)	
-	$(MAKE) -f$(BUILDDIR)/makefile.ascii2nc
-
 
 
 clean:
@@ -100,30 +72,6 @@ config:
 	mkdir -p $(OBJDIR) $(BINDIR)	
 	ls -1 $(SRCDIR)*.f90 > $(OBJDIR)/sourcelist
 	perl $(BUILDDIR)/config.pl $(OBJDIR)/sourcelist $(MODEL_MAIN) $(ARCH) \
-	rm $(OBJDIR)/sourcelist
-	@echo Config OK.
-
-config_box:
-	ls -1 $(SRCDIR)*.f90 > $(OBJDIR)/sourcelist
-	perl $(BUILDDIR)/config.pl $(OBJDIR)/sourcelist $(BOX_MAIN) $(ARCH)
-	rm $(OBJDIR)/sourcelist
-	@echo Config OK.
-
-config_grads2grib:
-	ls -1 $(SRCDIR)*.f90 > $(OBJDIR)/sourcelist
-	perl $(BUILDDIR)/config.pl $(OBJDIR)/sourcelist $(GRADS2GRIB_MAIN) $(ARCH) \
-	rm $(OBJDIR)/sourcelist
-	@echo Config OK.
-
-config_is4fires:
-	ls -1 $(SRCDIR)*.f90 > $(OBJDIR)/sourcelist
-	perl $(BUILDDIR)/config.pl $(OBJDIR)/sourcelist $(IS4FIRES_MAIN) $(ARCH) \
-	rm $(OBJDIR)/sourcelist
-	@echo Config OK.
-
-config_ascii2nc:
-	ls -1 $(SRCDIR)*.f90 > $(OBJDIR)/sourcelist
-	perl $(BUILDDIR)/config.pl $(OBJDIR)/sourcelist $(ASCII2NC_MAIN) $(ARCH) \
 	rm $(OBJDIR)/sourcelist
 	@echo Config OK.
 
@@ -162,62 +110,20 @@ expand :
 up : expand
 	cd $(SRCDIR) && svn up
 
-KPP_DIR=$(shell readlink -f ../kpp/)
-KPP=$(KPP_DIR)/bin/kpp
-# Create chemistries using KPP. KPP_DIR must be defined!
-kpp : $(KPP)
-$(KPP) : 
-	cd $(KPP_DIR) && $(MAKE)
-
-cbm4 : 
-	KPP_HOME=$(KPP_DIR) $(PYTHON) kpp2silam.py $(KPP2SILAM_FLAGS) --kpp-dir=$(KPP_DIR)/cbm4 \
-	--silam-dir=$(SRCDIR) cbm4 # if start using photolysis for cbm4, use the line below
-#	--silam-dir=$(SRCDIR) -u photolysis --photoarr cbm4
-
-cbm4_SOA : 
-	KPP_HOME=$(KPP_DIR) $(PYTHON) kpp2silam.py --transf-id=5011 $(KPP2SILAM_FLAGS) --kpp-dir=$(KPP_DIR)/cbm4_SOA \
-	--silam-dir=$(SRCDIR) --SOA  -u photolysis  cbm4_SOA
-
-cbm5_strato_SOA : 
-	KPP_HOME=$(KPP_DIR) $(PYTHON) kpp2silam.py --transf-id=5014 $(KPP2SILAM_FLAGS) --kpp-dir=$(KPP_DIR)/cbm5_strato_SOA \
-	--silam-dir=$(SRCDIR) --SOA -u photolysis --strato cbm5_strato_SOA 
-
-
-cbm5_SOA : 
-	KPP_HOME=$(KPP_DIR) $(PYTHON) kpp2silam.py --transf-id=5013 $(KPP2SILAM_FLAGS) --kpp-dir=$(KPP_DIR)/cbm5_SOA \
-	--silam-dir=$(SRCDIR) --SOA -u photolysis cbm5_SOA 
-
-cbm42_strato :
-	KPP_HOME=$(KPP_DIR) $(PYTHON) kpp2silam.py --transf-id=5008 $(KPP2SILAM_FLAGS) --kpp-dir=$(KPP_DIR)/cbm42_strato \
-	--silam-dir=$(SRCDIR) -u photolysis --strato cbm42_strato
-
-cbm42_strato_SOA : 
-	KPP_HOME=$(KPP_DIR) $(PYTHON) kpp2silam.py --transf-id=5012 $(KPP2SILAM_FLAGS) --kpp-dir=$(KPP_DIR)/cbm42_strato_SOA \
-	--silam-dir=$(SRCDIR)  --SOA -u photolysis --strato cbm42_strato_SOA
-
-
-# Create a source distribution package. Libraries are not
-# included. The check_revision script is replace with a dummy, since
-# the .svn directory is not included either.
+# Create a source package from the current sources and runtime resources.
+# Preserve revision modules; the package has no version-control metadata.
 
 DISTRO = $(DISTRDIR)/$(PROGRAM)
 distr : config
-	$(PYTHON) $(BUILDDIR)/check_revision --distr $(SRCDIR)
 	rm -rf  $(DISTRO)
-	mkdir -p $(DISTRO) && cd $(DISTRO) && mkdir -p source bin build obj ini kpp
-	cp -vp makefile makefile.model config.pl last.revision library.objects options.*[!~] $(DISTRO)/build
+	mkdir -p $(DISTRO)/source $(DISTRO)/bin $(DISTRO)/build $(DISTRO)/obj $(DISTRO)/ini
+	cp -vp makefile makefile.* config.pl library.objects Makefile.branch options.*[!~] $(DISTRO)/build
 	touch $(DISTRO)/build/check_revision
-	cp -vp ../source/Makefile ../source/*.f90 $(DISTRO)/source
+	cp -vp ../source/Makefile ../source/DefaultSetup ../source/*.f90 $(DISTRO)/source
 	cp -vrp ../ini/*  $(DISTRO)/ini
-	cp -vrp ../kpp/*  $(DISTRO)/kpp
-	cd  $(DISTRO)/kpp && 	make distclean
-
-	cp README $(DISTRO)
+	cp -vrp ../doc $(DISTRO)
+	cp ../README.md ../LICENSE ../AGENTS.md $(DISTRO)
 	cd $(DISTRDIR) && tar cvjf $(PROGRAM).tar.bz2 $(PROGRAM)
-#	rm ../source/svndiff.mod.f90 # Do not keep distros svndiff.mod.f90
-	touch ../source/silam_main.f90 #Touch something to force regeneration of svndiff.mod.f90
-	echo "module svndiff" >  ../source/svndiff.mod.f90 # Make config happy
-	echo "use globals" >>  ../source/svndiff.mod.f90 # Must be present, so config works correctly
 
 
 # Make documentation. So far just the data assimilation "readme" document.

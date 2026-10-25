@@ -144,7 +144,6 @@ LIST = emission_parameters
    grib_name_table_fnm = ^grib_name_table.silam
    netcdf_name_table_fnm = ^netcdf_name_table.silam
    optical_properties_meta_data_file = ^optical_properties.dat
-   photolysis_data_file = ^photolysis_finrose.dat
    timezone_list_fnm = ^tzindex.dat
    allow_zero_forecast_length = NO
    print_debug_info = DEBUG_INFO_YES

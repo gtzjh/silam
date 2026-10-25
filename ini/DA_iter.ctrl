@@ -240,7 +240,6 @@ standard_cocktail_fnm = ^ini\standard_SOA_cocktails.ini
 grib_name_table_fnm = ^ini\grib_name_table.silam
 netcdf_name_table_fnm = ^ini\netcdf_name_table.silam
 timezone_list_fnm = ^ini\tzindex_added_country_codes.dat
-photolysis_data_file = ^ini\photolysis_finrose.dat
 land_use_data_meta_file = ^ini\land_use_features_USGS_Eurasia.dat
 optical_properties_meta_data_file = ^ini\optical_properties.dat
 allow_zero_forecast_length = NO

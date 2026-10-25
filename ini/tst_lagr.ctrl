@@ -26,7 +26,6 @@ LIST = general_parameters
 
 #   emission_source = VOID_SOURCE
 #   emission_source = SEA_SALT  d:\!model\2011\silam_v5_7\ini\src_sea_salt.ini
-#   emission_source = WIND_BLOWN_DUST d:\!model\silam_v5_7\ini\src_wind_blown_dust.ini
 #   emission_source = BIOGENIC_VOC
 #   emission_source = WILD_LAND_FIRES  <fire_file_name>
 #   emission_source = POLLEN  d:\!model\silam_v5_7\ini\src_pollen_birch.ini
@@ -266,7 +265,6 @@ standard_cocktail_fnm = ^ini\standard_SOA_cocktails.ini
 grib_code_table_fnm = ^ini\grib_code_table_v5.silam
 netcdf_name_table_fnm = ^ini\netcdf_name_table.silam
 timezone_list_fnm = ^ini\tzindex_added_country_codes.dat
-photolysis_data_file = ^ini\photolysis_finrose.dat
 land_use_data_meta_file = ^ini\land_use_features_USGS_Eurasia.dat
 optical_properties_meta_data_file = ^ini\optical_properties.dat
 allow_zero_forecast_length = NO

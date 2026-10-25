@@ -89,19 +89,6 @@ expand :
 up : expand
 	cd $(SRCDIR) && svn up
 
-KPP_DIR=$(shell readlink -f ../kpp/)
-KPP=$(KPP_DIR)/bin/kpp
-# Create chemistries using KPP. KPP_DIR must be defined!
-kpp : $(KPP)
-$(KPP) : 
-	cd $(KPP_DIR) && $(MAKE)
-cbm4 : 
-	KPP_HOME=$(KPP_DIR) python kpp2silam.py $(KPP2SILAM_FLAGS) --kpp-dir=$(KPP_DIR)/cbm4 \
-	--silam-dir=$(SRCDIR) -u photolysis cbm4
-cbm4_strato : $(KPP) $(KPP_DIR)/models/cbm42_strato.*
-	KPP_HOME=$(KPP_DIR) python kpp2silam.py $(KPP2SILAM_FLAGS) --kpp-dir=$(KPP_DIR)/cbm42_strato \
-	--silam-dir=$(SRCDIR) -u photolysis cbm42_strato
-
 
 # Create a source distribution package. Libraries are not
 # included. The check_revision script is replace with a dummy, since

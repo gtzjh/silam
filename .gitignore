@@ -1,13 +1,8 @@
 bin 
 obj
 /.tmp/
+/.worktree/
 /build/sourcelist
-kpp/cbm[45]*/*.f90
-kpp/cbm[45]*/*.map
-kpp/cbm[45]*/Makefile_cbm*
-kpp/src/*.o
-kpp/src/tags
-kpp/int/tags
 
 # Fortran / C compiled objects and module files
 *.o

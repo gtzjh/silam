@@ -4701,6 +4701,9 @@ CONTAINS
     elseif(trim(chQuantity) == "fraction_of_ice")then
       iQ = fraction_of_ice_flag 
 
+    elseif(trim(chQuantity) == "ice_fract")then !!! FIXME DUP to make test field working
+      iQ = fraction_of_ice_flag 
+
     elseif(trim(chQuantity) == "fraction_of_land")then
       iQ = fraction_of_land_flag 
 

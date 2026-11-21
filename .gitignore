@@ -1,5 +1,6 @@
-.worktree
+/.worktree/
 .tmp
+*:Zone.Identifier
 
 
 bin 

@@ -1,0 +1,93 @@
+name: SILAM container tests
+
+on:
+  push:
+    branches: [main, ci/github-actions]
+
+permissions:
+  contents: read
+
+jobs:
+  toypoint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      SILAM_IMAGE: silam-ci:${{ github.sha }}
+      CONTAINER_PREFIX: silam-ci-${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - name: Check out the pushed commit and complete history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Prepare image context and results directory
+        shell: bash
+        run: mkdir -p "$RUNNER_TEMP/silam-image-context" "$RUNNER_TEMP/silam-ci-results"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+        with:
+          cache-binary: false
+
+      - name: Build the project image
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        env:
+          DOCKER_BUILD_RECORD_UPLOAD: 'false'
+        with:
+          context: ${{ runner.temp }}/silam-image-context
+          file: ./Dockerfile
+          platforms: linux/amd64
+          load: true
+          push: false
+          tags: ${{ env.SILAM_IMAGE }}
+          no-cache: true
+          pull: true
+
+      - name: Compile and test GNU
+        shell: bash
+        run: |
+          docker run --rm --init \
+            --name "$CONTAINER_PREFIX-gnu" \
+            --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" \
+            --mount "type=bind,src=$RUNNER_TEMP/silam-ci-results,dst=/results" \
+            --workdir /workspace \
+            "$SILAM_IMAGE" \
+            bash .github/scripts/test-toypoint.sh gnu /workspace /results
+
+      - name: Compile and test GNU MPI
+        shell: bash
+        run: |
+          docker run --rm --init \
+            --name "$CONTAINER_PREFIX-gnumpi" \
+            --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" \
+            --mount "type=bind,src=$RUNNER_TEMP/silam-ci-results,dst=/results" \
+            --workdir /workspace \
+            "$SILAM_IMAGE" \
+            bash .github/scripts/test-toypoint.sh gnumpi /workspace /results
+
+      - name: Upload successful build logs and summaries
+        if: success()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: silam-success-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/silam-ci-results/*/artifacts/build.log
+            ${{ runner.temp }}/silam-ci-results/*/artifacts/summary.txt
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload failure diagnostics and available output
+        if: failure() || cancelled()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: silam-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/silam-ci-results/*/artifacts/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Clean up test containers
+        if: always()
+        shell: bash
+        run: docker rm --force "$CONTAINER_PREFIX-gnu" "$CONTAINER_PREFIX-gnumpi" >/dev/null 2>&1 || true

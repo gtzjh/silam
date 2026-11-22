@@ -102,7 +102,20 @@ jobs:
         shell: bash
         env:
           SILAM_IMAGE: ${{ steps.image.outputs.image }}
-        run: docker push "$SILAM_IMAGE"
+        run: |
+          push_log="$RUNNER_TEMP/silam-docker-push.log"
+          for retry_delay in 5 15 0; do
+            if docker push "$SILAM_IMAGE" 2>&1 | tee "$push_log"; then
+              exit 0
+            else
+              status=$?
+            fi
+            if (( retry_delay == 0 )) || ! grep -Fxq 'unknown blob' "$push_log"; then
+              exit "$status"
+            fi
+            printf 'GHCR returned unknown blob; retrying the tested image in %s seconds.\n' "$retry_delay"
+            sleep "$retry_delay"
+          done
 
       - name: Upload successful build logs and summaries
         if: success() && steps.image.outputs.needs_build == 'true'

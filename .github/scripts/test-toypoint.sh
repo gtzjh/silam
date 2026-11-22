@@ -26,6 +26,46 @@ verify_run_log() {
     printf 'execution_mode=%s: PASS\nnormal_completion=PASS\n' "$mode"
 }
 
+verify_netcdf_file() {
+    local output=$1
+    local diagnostics=$2
+    local status required_end file_size
+    LC_ALL=C ncvalidator "$output" > "$diagnostics.validator.log" 2>&1 || {
+        status=$?
+        cat "$diagnostics.validator.log" >&2
+        return "$status"
+    }
+    # ncvalidator can warn about truncation while returning zero; -q hides this warning.
+    if grep -Eq 'file size \([0-9]+\) is less than expected \([0-9]+\)' "$diagnostics.validator.log"; then
+        cat "$diagnostics.validator.log" >&2
+        return 1
+    fi
+    LC_ALL=C ncoffsets -s -r "$output" > "$diagnostics.offsets.txt" 2>&1 || {
+        status=$?
+        cat "$diagnostics.offsets.txt" >&2
+        return "$status"
+    }
+    grep -Eq '^// File format: CDF-[12]$' "$diagnostics.offsets.txt" || return "$?"
+    # ncoffsets uses exclusive ends. Fixed variables include four-byte padding;
+    # record ends must remain unrounded for the single-short/byte/char record case.
+    required_end=$(awk '
+        /^[[:space:]]*extent[[:space:]]*=/ { if ($3 > maximum) maximum = $3; seen = 1 }
+        /^[[:space:]]*end[[:space:]]+file[[:space:]]+offset[[:space:]]*=/ {
+            end = $5
+            if ($0 !~ /record\)/) end = int((end + 3) / 4) * 4
+            if (end > maximum) maximum = end
+            seen = 1
+        }
+        END { if (!seen) exit 1; printf "%.0f\n", maximum }
+    ' "$diagnostics.offsets.txt") || return "$?"
+    file_size=$(stat -c '%s' "$output") || return "$?"
+    if (( required_end > file_size )); then
+        printf 'Truncated NetCDF data: %s, required_end=%s, file_size=%s\n' "$output" "$required_end" "$file_size" >&2
+        return 1
+    fi
+    ncdump "$output" > /dev/null || return "$?"
+}
+
 verify_output() {
     local case_dir=$1
     local artifacts=$2
@@ -36,127 +76,50 @@ verify_output() {
         return 1
     fi
     # Read all variables, not only the header, before checking the time axis.
-    local netcdf_file
+    local netcdf_file index=0 status units values epoch origin first last
+    local -a time_values
     find "$case_dir/output" -type f -name '*.nc' -print0 > "$artifacts/netcdf-files.list" || return "$?"
     while IFS= read -r -d '' netcdf_file; do
-        ncdump "$netcdf_file" > /dev/null || return "$?"
+        index=$((index + 1))
+        verify_netcdf_file "$netcdf_file" "$artifacts/netcdf-$index" || return "$?"
     done < "$artifacts/netcdf-files.list"
     ncdump -v time "$output" > "$artifacts/time.cdl" || return "$?"
-    TOYPOINT_NETCDF_FILES="$artifacts/netcdf-files.list" TOYPOINT_TIME_DUMP="$artifacts/time.cdl" TOYPOINT_TIME_REFERENCE="$reference" python3 <<'PY'
-import datetime
-import json
-import math
-import os
-import pathlib
-import re
-import struct
-
-
-def verify_netcdf_extent(path):
-    # ncdump can succeed on a truncated classic file. Check declared data extents.
-    # https://docs.unidata.ucar.edu/netcdf-c/current/file_format_specifications.html
-    type_sizes = {1: 1, 2: 1, 3: 2, 4: 4, 5: 4, 6: 8}
-    file_size = path.stat().st_size
-    with path.open('rb') as stream:
-        def read(size):
-            data = stream.read(size)
-            if len(data) != size:
-                raise SystemExit(f'Truncated NetCDF header: {path}')
-            return data
-
-        def integer(code='>I'):
-            return struct.unpack(code, read(struct.calcsize(code)))[0]
-
-        def skip(size):
-            if stream.tell() + size > file_size:
-                raise SystemExit(f'Truncated NetCDF header: {path}')
-            stream.seek(size, 1)
-
-        def name():
-            size = integer()
-            value = read(size).decode('utf-8')
-            skip(-size % 4)
-            return value
-
-        def count(expected_tag):
-            tag, length = integer(), integer()
-            if (tag, length) == (0, 0):
-                return 0
-            if tag != expected_tag:
-                raise SystemExit(f'Invalid NetCDF header list in {path}: tag={tag}')
-            return length
-
-        def attributes():
-            for _ in range(count(12)):
-                name()
-                kind, length = integer(), integer()
-                size = type_sizes[kind] * length
-                skip(size + (-size % 4))
-
-        magic = read(4)
-        if magic not in (b'CDF\x01', b'CDF\x02'):
-            raise SystemExit(f'Expected CDF1/CDF2 NetCDF3 output: {path}')
-        num_records = integer()
-        if num_records == 0xffffffff:
-            raise SystemExit(f'Indeterminate record count in completed output: {path}')
-        dimensions = []
-        for _ in range(count(10)):
-            name()
-            dimensions.append(integer())
-        attributes()
-        variables = []
-        for _ in range(count(11)):
-            variable_name = name()
-            shape = [dimensions[integer()] for _ in range(integer())]
-            is_record = bool(shape) and shape[0] == 0
-            attributes()
-            kind, allocated = integer(), integer()
-            begin = integer('>Q' if magic == b'CDF\x02' else '>I')
-            size = math.prod(shape[1:] if is_record else shape) * type_sizes[kind]
-            padded = size + (-size % 4)
-            if allocated != min(padded, 0xffffffff):
-                raise SystemExit(f'Invalid NetCDF variable size in {path}: {variable_name}')
-            variables.append((variable_name, is_record, begin, size, padded, kind))
-
-        header_end = stream.tell()
-        record_variables = [variable for variable in variables if variable[1]]
-        record_stride = sum(variable[4] for variable in record_variables)
-        if len(record_variables) == 1 and record_variables[0][5] in (1, 2, 3):
-            record_stride = record_variables[0][3]
-        for variable_name, is_record, begin, size, padded, _ in variables:
-            if is_record and num_records == 0:
-                continue
-            end = begin + ((num_records - 1) * record_stride + size if is_record else padded)
-            if begin < header_end or end > file_size:
-                raise SystemExit(f'Truncated or invalid NetCDF data: {path}, variable={variable_name}, required_end={end}, file_size={file_size}')
-
-
-netcdf_paths = pathlib.Path(os.environ['TOYPOINT_NETCDF_FILES']).read_bytes().split(b'\0')
-for file_path in filter(None, netcdf_paths):
-    verify_netcdf_extent(pathlib.Path(os.fsdecode(file_path)))
-print(f'netcdf_structure=PASS')
-
-dump = pathlib.Path(os.environ['TOYPOINT_TIME_DUMP']).read_text()
-reference = json.loads(pathlib.Path(os.environ['TOYPOINT_TIME_REFERENCE']).read_text())
-units_match = re.search(r'\btime:units\s*=\s*"([^"]+)"\s*;', dump)
-values_match = re.search(r'\bdata:\s.*?\btime\s*=\s*([^;]+);', dump, re.DOTALL)
-if units_match is None or values_match is None:
-    raise SystemExit('Cannot read the NetCDF time units and values')
-units = units_match.group(1)
-values = [float(item.strip()) for item in values_match.group(1).split(',')]
-if units != reference['units'] or values != reference['values']:
-    raise SystemExit(f'Time axis mismatch: expected {reference}, got units={units!r}, values={values}')
-unit, epoch = units.split(' since ', 1)
-seconds_per_unit = {'seconds': 1, 'minutes': 60, 'hours': 3600}[unit]
-origin = datetime.datetime.fromisoformat(epoch.removesuffix(' UTC')).replace(tzinfo=datetime.timezone.utc)
-times = [origin + datetime.timedelta(seconds=value * seconds_per_unit) for value in values]
-if any((right - left).total_seconds() != 3600 for left, right in zip(times, times[1:])):
-    raise SystemExit(f'Non-hourly or non-increasing time axis: {times}')
-print(f'netcdf_read=PASS')
-print(f'time_axis=PASS: {len(times)} records, units={units!r}, values={values}')
-print(f'time_first={times[0].isoformat()}')
-print(f'time_last={times[-1].isoformat()}')
-PY
+    awk '
+        /^[[:space:]]*time:units[[:space:]]*=/ {
+            units = $0; sub(/^[^"]*"/, "", units); sub(/".*/, "", units); units_seen++
+        }
+        /^[[:space:]]*data:/ { in_data = 1; next }
+        in_data && /^[[:space:]]*time[[:space:]]*=/ { reading = 1; sub(/^[^=]*=/, "") }
+        reading {
+            values = values $0
+            if (index($0, ";")) {
+                sub(/;.*/, "", values); gsub(/[[:space:]]/, "", values)
+                reading = 0; values_seen++
+            }
+        }
+        END {
+            if (units_seen != 1 || values_seen != 1) exit 1
+            print "units=" units; print "values=" values
+        }
+    ' "$artifacts/time.cdl" > "$artifacts/time.txt" || return "$?"
+    if cmp -s "$reference" "$artifacts/time.txt"; then
+        :
+    else
+        status=$?
+        printf 'Time axis mismatch; observed:\n' >&2
+        cat "$artifacts/time.txt" >&2
+        return "$status"
+    fi
+    units=$(sed -n 's/^units=//p' "$artifacts/time.txt") || return "$?"
+    values=$(sed -n 's/^values=//p' "$artifacts/time.txt") || return "$?"
+    IFS=, read -r -a time_values <<< "$values" || return "$?"
+    epoch=${units#seconds since }
+    origin=$(date -u --date="$epoch" +%s) || return "$?"
+    first=$(date -u --date="@$((origin + time_values[0]))" '+%Y-%m-%dT%H:%M:%S+00:00') || return "$?"
+    last=$(date -u --date="@$((origin + time_values[${#time_values[@]} - 1]))" '+%Y-%m-%dT%H:%M:%S+00:00') || return "$?"
+    printf 'netcdf_structure=PASS\nnetcdf_read=PASS\n'
+    printf 'time_axis=PASS: %s records, units=%s, values=%s\n' "${#time_values[@]}" "$units" "$values"
+    printf 'time_first=%s\ntime_last=%s\n' "$first" "$last"
 }
 
 finish() {
@@ -226,6 +189,7 @@ main() {
         printf 'commit=%s\n' "$commit"
         printf 'OMP_NUM_THREADS=%s\nOPENBLAS_NUM_THREADS=%s\n' "$OMP_NUM_THREADS" "$OPENBLAS_NUM_THREADS"
         printf 'model_timeout=7 minutes; TERM then KILL after 30 seconds\n'
+        printf 'environment_image=%s\n' "${SILAM_ENVIRONMENT_IMAGE:-local Dockerfile image}"
         gfortran --version | sed -n '1p'
         sha256sum "$repo_root/Dockerfile"
     } > "$artifacts/summary.txt"
@@ -261,7 +225,7 @@ main() {
 
     stage=verify
     verify_run_log "$mode" "$artifacts/run.log" >> "$artifacts/summary.txt" 2>&1
-    verify_output "$case_dir" "$artifacts" "$repo_root/.github/scripts/toypoint-time.json" >> "$artifacts/summary.txt" 2>&1
+    verify_output "$case_dir" "$artifacts" "$repo_root/.github/scripts/toypoint-time.txt" >> "$artifacts/summary.txt" 2>&1
     stage=complete
 }
 

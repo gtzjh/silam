@@ -2,7 +2,7 @@ name: SILAM container tests
 
 on:
   push:
-    branches: [main, ci/reuse-image-shell-validation]
+    branches: [main]
 
 permissions:
   contents: read

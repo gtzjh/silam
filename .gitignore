@@ -1,6 +1,10 @@
 /.worktree/
 .tmp
 *:Zone.Identifier
+/.agents/
+/.aws/
+/.codex/
+/.claude/
 
 
 bin 

@@ -5,7 +5,7 @@ RUN <<'APT'
 set -eu
 apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    ca-certificates curl gcc-12 gfortran-12 git make perl sudo tmux vim wget \
+    ca-certificates gcc-12 gfortran-12 git make perl sudo tmux vim \
     openssh-client openssh-server \
     libblas-dev libbz2-dev libeccodes-dev libeccodes-tools liblapack-dev \
     libnetcdf-dev libnetcdff-dev netcdf-bin \

@@ -46,6 +46,15 @@ UsePAM yes
 SetEnv PATH=${conda_dir}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 Subsystem sftp internal-sftp
 SSHD_CONFIG
+cat >> /etc/default/ssh <<'SSH_DEFAULTS'
+
+# Generate missing host keys before the Debian SSH service starts.
+case "${1:-}" in
+    start|restart)
+        /usr/bin/ssh-keygen -A || exit $?
+        ;;
+esac
+SSH_DEFAULTS
 SSH
 
 COPY --chmod=0755 <<'START_SSHD' /usr/local/sbin/start-sshd

@@ -2,21 +2,56 @@ FROM docker.io/anaconda/miniconda:26.3.2@sha256:95b6476ce5d6ef79b7e1f2d109e827a1
 
 RUN <<'APT'
 set -eu
-apt-get update
+if [ ! -s /etc/ssl/certs/ca-certificates.crt ]; then
+    apt-get update --error-on=any
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ca-certificates
+fi
+
+# Keep the inherited Debian security source and archive signing key.
+sed -i -E 's|^(URIs:[[:blank:]]+)https?://deb\.debian\.org/debian/?[[:blank:]]*$|\1https://mirrors.tuna.tsinghua.edu.cn/debian|' \
+    /etc/apt/sources.list.d/debian.sources
+apt-get update --error-on=any
 DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    ca-certificates gcc-12 gfortran-12 git make perl sudo tmux vim \
+    ca-certificates curl file git make perl ripgrep rsync sudo tmux unzip vim wget \
+    cmake fortran-language-server g++-12 gcc-12 gdb gfortran-12 ninja-build pkgconf \
     openssh-client openssh-server \
     libblas-dev libbz2-dev libeccodes-dev libeccodes-tools liblapack-dev \
     libnetcdf-dev libnetcdff-dev netcdf-bin \
     libopenmpi-dev openmpi-bin libpnetcdf-dev pnetcdf-bin \
     libproj-dev proj-bin
-for tool in cpp gcc gcc-ar gcc-nm gcc-ranlib gfortran; do
+for tool in cpp g++ gcc gcc-ar gcc-nm gcc-ranlib gfortran; do
     ln -s "/usr/bin/${tool}-12" "/usr/local/bin/$tool"
 done
 ln -s gcc /usr/local/bin/cc
+ln -s g++ /usr/local/bin/c++
 rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 rm -f /etc/ssh/ssh_host_*
 APT
+
+RUN <<'CONDA'
+set -eu
+umask 022
+install -d -m 0755 /etc/conda /etc/conda/condarc.d
+cat > /etc/conda/condarc.d/silam-mirrors.yaml <<'CONDA_MIRRORS'
+channels: [defaults]
+default_channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
+CONDA_MIRRORS
+CONDA
+
+RUN <<'INSTALL_FPM'
+set -eu
+fpm_version=0.14.0
+fpm_sha256=8dbc48ce5491cb862cfc1ec8740dcb2da0ec1555db079ace31a01b3a6e6f3437
+fpm_tmp_dir=$(mktemp -d)
+trap 'rm -rf "$fpm_tmp_dir"' EXIT
+
+curl --fail --silent --show-error --location --retry 3 --output "$fpm_tmp_dir/fpm" \
+    "https://github.com/fortran-lang/fpm/releases/download/v${fpm_version}/fpm-${fpm_version}-linux-x86_64-gcc-14"
+printf '%s  %s\n' "$fpm_sha256" "$fpm_tmp_dir/fpm" | sha256sum --check
+install -m 0755 "$fpm_tmp_dir/fpm" /usr/local/bin/fpm
+INSTALL_FPM
 
 RUN <<'FORTRAN_MODULES'
 set -eu
@@ -58,6 +93,7 @@ SSH_DEFAULTS
 SSH
 
 COPY --chmod=0755 <<'START_SSHD' /usr/local/sbin/start-sshd
+#!/bin/sh
 set -eu
 
 keygen_prefix=/run/sshd/keygen
